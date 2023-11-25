@@ -6,7 +6,7 @@ export const Stats = () => {
     <div className="space-y-8">
       <div className="text-2xl font-bold">7</div>
       <p className="text-xs text-muted-foreground">
-        plantes ajouté(e)s au potager
+        plantes ajouté(e)s au potager.
       </p>
       <Separator className="my-4" />
       <div className="text-2xl font-bold">14</div>
