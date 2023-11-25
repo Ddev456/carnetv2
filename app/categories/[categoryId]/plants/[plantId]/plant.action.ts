@@ -88,11 +88,21 @@ export const handleEventState = authenticatedAction(
     const countEventsLimit = await prisma.userNotifications.count({
       where: {
         userId: userId,
-        removed: false,
+        removed: true,
       },
     });
 
     if (countEventsLimit >= 10) return { error: true };
+
+    const isRemoved = await prisma.userNotifications.findFirst({
+      where: {
+        plantId: plantId,
+        userId: userId,
+      },
+      select: {
+        removed: true,
+      },
+    });
 
     const countEvent = await prisma.userNotifications.count({
       where: {
@@ -101,9 +111,9 @@ export const handleEventState = authenticatedAction(
       },
     });
 
-    const isExist = countEvent !== 0;
+    const isPotager = countEvent !== 0;
 
-    if (isExist) {
+    if (isRemoved && isPotager) {
       const eventId = await prisma.userNotifications.findFirst({
         where: {
           plantId: plantId,
@@ -122,10 +132,35 @@ export const handleEventState = authenticatedAction(
           data: {
             typeEvent: typeEvent || "nursery",
             startDate: startDate || new Date(Date.now()),
+            removed: false,
           },
         });
       }
-    } else {
+    }
+    // else if (isPotager) {
+    //   const eventId = await prisma.userNotifications.findFirst({
+    //     where: {
+    //       plantId: plantId,
+    //       userId: userId,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //   });
+
+    //   if (eventId) {
+    //     await prisma.userNotifications.update({
+    //       where: {
+    //         id: eventId.id,
+    //       },
+    //       data: {
+    //         typeEvent: typeEvent || "nursery",
+    //         startDate: startDate || new Date(Date.now()),
+    //       },
+    //     });
+    //   }
+    // }
+    else {
       await prisma.userNotifications.create({
         data: {
           userId: userId,
@@ -164,6 +199,7 @@ export const handleRemovePotager = authenticatedAction(
       where: {
         plantId: plantId,
         userId: userId,
+        removed: false,
       },
     });
 
@@ -183,6 +219,7 @@ export const handleRemovePotager = authenticatedAction(
       if (eventId) {
         await prisma.userNotifications.update({
           where: {
+            userId: userId,
             id: eventId.id,
           },
           data: {

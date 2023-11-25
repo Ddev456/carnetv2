@@ -49,8 +49,8 @@ export const DataView = async () => {
       category: plant.category.name,
       water: plant.water,
       exposition: plant.exposition,
-      isPotager: flatIds?.some((item) => item.id === plant.id)
-        ? flatIds?.some((item) => item.id === plant.id && !item.removed)
+      isPotager: flatIds?.some((item) => item.id === plant.id && !item.removed)
+        ? true
         : false,
       isReadOnly: !Boolean(user),
     };
