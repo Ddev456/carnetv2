@@ -13,13 +13,6 @@ export const CategoryCard = (props: CategoryCardProps) => {
     <Link href={`/categories/${props.category.id}`}>
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row gap-3 space-y-0 transition-transform hover:scale-105 hover:bg-secondary">
-          {/* <Avatar className="h-16 w-16 rounded">
-            <AvatarFallback>{props.category.name[0]}</AvatarFallback>
-            {props.category.image ? (
-              <AvatarImage src={props.category.image} />
-            ) : null}
-          </Avatar> */}
-
           <p className="max-w-lg text-xl font-semibold leading-normal">
             {props.category.name === "Légume-Grain"
               ? "🫛"
