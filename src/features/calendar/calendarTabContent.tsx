@@ -14,6 +14,7 @@ import { SubmitButton } from "@/components/form/SubmitButton";
 import { DayPickerProps, Modifiers } from "react-day-picker";
 import { UpdateConfirmation } from "./updateConfirmation";
 import { MustLoggedAlert } from "@/components/ui/mustLoggedAlert";
+import { useMutation } from "@tanstack/react-query";
 
 type calendarType =
   | "nursery"
@@ -121,14 +122,22 @@ export const CalendarTabContent = ({
     }
   };
 
+  const mutation = useMutation({ mutationFn: handleEventState });
   const handleAction = async () => {
-    const response = await handleEventState({
+    const response = await mutation.mutateAsync({
       plantId: plant.id,
       plantName: plant.name,
       plantCategory: plant.category.name,
       startDate: selectedEvent,
       typeEvent: typeEvent,
     });
+    // const response = await handleEventState({
+    //   plantId: plant.id,
+    //   plantName: plant.name,
+    //   plantCategory: plant.category.name,
+    //   startDate: selectedEvent,
+    //   typeEvent: typeEvent,
+    // });
 
     // if (response?.data?.warning) {
     //   toast.warning("Veuillez sélectionner une date");

@@ -6,6 +6,7 @@ import {
   handleRemovePotager,
 } from "../../../app/categories/[categoryId]/plants/[plantId]/plant.action";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 export const AddPotagerButton = ({
   plantId,
@@ -18,22 +19,37 @@ export const AddPotagerButton = ({
   plantCategory: string;
   isPotager: boolean;
 }) => {
+  const mutation = useMutation({ mutationFn: handleEventState });
+  const removeMutation = useMutation({ mutationFn: handleRemovePotager });
+
   const handleRemove = async () => {
-    const response = await handleRemovePotager({
+    const response = await removeMutation.mutateAsync({
       plantId: plantId,
     });
+
+    // const response = await handleRemovePotager({
+    //   plantId: plantId,
+    // });
+
     if (response?.data?.update) {
       toast.warning("Plante supprimée du potager avec succès");
     }
   };
   const handleSubmit = async () => {
-    const response = await handleEventState({
+    const response = await mutation.mutateAsync({
       plantId: plantId,
       plantName: plantName,
       plantCategory: plantCategory,
       startDate: null,
       typeEvent: null,
     });
+    // const response = await handleEventState({
+    //   plantId: plantId,
+    //   plantName: plantName,
+    //   plantCategory: plantCategory,
+    //   startDate: null,
+    //   typeEvent: null,
+    // });
     // if (response?.data?.warning) {
     //   toast.warning("Veuillez sélectionner une date");
     //   return;

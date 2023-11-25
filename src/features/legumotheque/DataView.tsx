@@ -22,6 +22,7 @@ export const DataView = async () => {
         plantsEvents: {
           select: {
             plantId: true,
+            removed: true,
           },
         },
       },
@@ -34,7 +35,7 @@ export const DataView = async () => {
 
   const userPotagerIds = userPotager?.potager.map((plantsEvents) => {
     return plantsEvents?.["plantsEvents"].map((plant) => {
-      return plant.plantId;
+      return { id: plant.plantId, removed: plant.removed };
     });
   });
 
@@ -48,7 +49,8 @@ export const DataView = async () => {
       category: plant.category.name,
       water: plant.water,
       exposition: plant.exposition,
-      isPotager: flatIds?.includes(plant.id) ? true : false,
+      isPotager:
+        flatIds?.some((item) => item.id === plant.id && !item.removed) || false,
       isReadOnly: !Boolean(user),
     };
   });

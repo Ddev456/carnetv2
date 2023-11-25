@@ -5,6 +5,7 @@ import { handleEventState } from "../../../app/categories/[categoryId]/plants/[p
 import { PlantInfosType } from "../../../app/categories/[categoryId]/plants/[plantId]/plant.query";
 import clsx from "clsx";
 import { Button } from "./button";
+import { useMutation } from "@tanstack/react-query";
 
 type PotagerButtonProps = {
   plant: PlantInfosType;
@@ -19,18 +20,27 @@ export const PotagerButton = ({
   startDate,
   typeEvent,
 }: PotagerButtonProps) => {
+  // const mutation = useMutation(handleEventState);
+
   const handleAction = async () => {
     // await handlePlantState({
     //   plantId: plant.id,
     //   progress: plant.progress === "AJOUTE" ? "NONFAVORI" : "AJOUTE",
     // });
-    await handleEventState({
-      plantId: plant.id,
-      plantName: plant.name,
-      plantCategory: plant.category.name,
-      startDate: startDate,
-      typeEvent: typeEvent,
-    });
+    // await mutation.mutateAsync(id, {
+    //   plantId: plant.id,
+    //   plantName: plant.name,
+    //   plantCategory: plant.category.name,
+    //   startDate: startDate,
+    //   typeEvent: typeEvent,
+    // });
+    // await handleEventState({
+    //   plantId: plant.id,
+    //   plantName: plant.name,
+    //   plantCategory: plant.category.name,
+    //   startDate: startDate,
+    //   typeEvent: typeEvent,
+    // });
   };
   return (
     <form action={handleAction}>
