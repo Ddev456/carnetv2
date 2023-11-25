@@ -88,6 +88,7 @@ export const handleEventState = authenticatedAction(
     const countEventsLimit = await prisma.userNotifications.count({
       where: {
         userId: userId,
+        removed: false,
       },
     });
 
