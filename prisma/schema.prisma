@@ -1,0 +1,188 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+    id                    String  @id @default(cuid())
+    userId                String
+    type                  String
+    provider              String
+    providerAccountId     String
+    refreshTokenExpiresIn String?
+    refresh_token         String?
+    access_token          String?
+    expires_at            Int?
+    token_type            String?
+    scope                 String?
+    id_token              String?
+    session_state         String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique @map("session_token")
+    userId       String   @map("user_id")
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt    DateTime @default(now()) @map("created_at")
+
+    @@map("sessions")
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+    @@map("verificationtokens")
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+
+    role String?
+
+    accounts          Account[]
+    sessions          Session[]
+    ownedCategories   CategoryOnUser[]
+    createdCategories Category[]
+    plants            PlantOnUser[]
+    plantsEvents      UserNotifications[]
+}
+
+model Category {
+    id           String        @id @default(cuid())
+    name         String
+    presentation String // markdown
+    image        String
+    createdAt    DateTime      @default(now())
+    creatorId    String
+    state        CategoryState @default(BROUILLON)
+
+    creator User             @relation(fields: [creatorId], references: [id])
+    plants  Plant[]
+    users   CategoryOnUser[]
+}
+
+enum CategoryState {
+    BROUILLON
+    PUBLIE
+}
+
+model Plant {
+    id      String     @id @default(cuid())
+    name    String
+    rank    String // A string that represents the order of the plant
+    content String // markdown
+    state   PlantState @default(BROUILLON)
+
+    thumbnail    String
+    type         String
+    seedling     Int[]
+    nursery      Int[]
+    plantation   Int[]
+    flowering    Int[]
+    harvest      Int[]
+    exposition   Int
+    water        Int
+    spaceBetween Int
+    spaceOnRow   Int
+    seedMinTemp  Int
+    seedMaxTemp  Int
+    seedDepth    Int
+    emergence    Int
+    optimalTemp  Int
+    nitrogenN    Int
+    phosphorusP  Int
+    potassiumK   Int
+    level        Int
+    efficiency   Int
+    conservation Int
+    isHardiness  Boolean
+
+    eventPlantation Int?
+    eventFlowering  Int?
+    eventHarvest    Int?
+
+    createdAt  DateTime      @default(now())
+    category   Category      @relation(fields: [categoryId], references: [id])
+    categoryId String
+    users      PlantOnUser[]
+}
+
+enum PlantState {
+    BROUILLON
+    PUBLIE
+}
+
+model PlantOnUser {
+    id        String   @id @default(cuid())
+    userId    String
+    plantId   String
+    progress  Progress @default(NONFAVORI)
+    createdAt DateTime @default(now())
+
+    user  User  @relation(fields: [userId], references: [id])
+    plant Plant @relation(fields: [plantId], references: [id])
+
+    @@unique([userId, plantId])
+}
+
+enum Progress {
+    NONFAVORI
+    AJOUTE
+}
+
+model CategoryOnUser {
+    id         String    @id @default(cuid())
+    userId     String
+    categoryId String
+    createdAt  DateTime  @default(now())
+    canceledAt DateTime?
+
+    user     User     @relation(fields: [userId], references: [id])
+    category Category @relation(fields: [categoryId], references: [id])
+
+    @@unique([userId, categoryId])
+}
+
+enum TypeEvent {
+    nursery
+    seedling
+    plantation
+}
+
+model UserNotifications {
+    id            String    @id @default(cuid())
+    userId        String
+    plantId       String
+    plantName     String
+    plantCategory String
+    startDate     DateTime  @default(now())
+    typeEvent     TypeEvent @default(nursery)
+
+    removed Boolean @default(false)
+
+    updatedAt DateTime @default(now())
+
+    user User @relation(fields: [userId], references: [id])
+}
