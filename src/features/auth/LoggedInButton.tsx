@@ -42,11 +42,11 @@ export const LoggedInButton = (props: LoggedInButtonProps) => {
       <AlertDialog>
         <DropdownMenuTrigger asChild>
           <Button
-            className="bg-foreground text-background hover:bg-muted"
+            className="bg-transparent text-background hover:bg-muted md:flex md:bg-foreground"
             variant="default"
             size="sm"
           >
-            <Avatar className="mr-2 h-6 w-6">
+            <Avatar className="relative mr-2 h-6 w-6">
               <AvatarFallback>{props.user?.name?.[0]}</AvatarFallback>
               {props.user.image && (
                 <AvatarImage
@@ -55,27 +55,24 @@ export const LoggedInButton = (props: LoggedInButtonProps) => {
                 />
               )}
             </Avatar>
-            {props.user.name}
+            <span className="hidden md:block">{props.user.name}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem
-            className={clsx(
-              buttonVariants({ variant: "ghost" }),
-              "hover:bg-secondary"
-            )}
+            className={clsx(buttonVariants({ variant: "ghost" }))}
             asChild
           >
             <Link href="/account">
               <User2 className="mr-2" size={12} />
-              Account
+              Mon compte
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialogTrigger asChild>
             <DropdownMenuItem>
               <LogOut className="mr-2" size={12} />
-              Logout
+              Déconnexion
             </DropdownMenuItem>
           </AlertDialogTrigger>
         </DropdownMenuContent>

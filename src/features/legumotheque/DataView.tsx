@@ -41,7 +41,6 @@ export const DataView = async () => {
   const flatIds = userPotagerIds?.flat();
 
   const dataToTable = plants.map((plant) => {
-    console.log(flatIds);
     return {
       id: plant.id,
       name: plant.name,

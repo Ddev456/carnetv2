@@ -24,6 +24,8 @@ import {
 
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
+import clsx from "clsx";
+import { Cell } from "recharts";
 
 export type Plant = {
   id: string;
@@ -67,6 +69,7 @@ export const PlantsDataView = ({ data, columns }: PlantsDataViewProps) => {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    enableHiding: true,
     state: {
       sorting,
       columnFilters,

@@ -22,6 +22,9 @@ export type Plant = {
 export const columns: ColumnDef<Plant>[] = [
   {
     accessorKey: "id",
+    cell: ({ row }) => {
+      <div className="hidden"></div>;
+    },
   },
   {
     accessorKey: "name",
@@ -65,6 +68,33 @@ export const columns: ColumnDef<Plant>[] = [
     },
   },
   {
+    accessorKey: "isReadOnly",
+    header: "Action",
+    cell: ({ row }) => {
+      const plantId: string = row.getValue("id");
+      const plantName: string = row.getValue("name");
+      const plantCategory: string = row.getValue("category");
+
+      const isPotager: boolean = row.getValue("isPotager");
+
+      const renderCell = () => {
+        {
+          return Boolean(row.getValue("isReadOnly")) ? (
+            <MustLoggedAlert />
+          ) : (
+            <AddPotagerButton
+              isPotager={isPotager}
+              plantId={plantId}
+              plantName={plantName}
+              plantCategory={plantCategory}
+            />
+          );
+        }
+      };
+      return <span className="flex">{renderCell()}</span>;
+    },
+  },
+  {
     accessorKey: "water",
     header: "Besoins en eau",
     cell: ({ row }) => {
@@ -94,38 +124,12 @@ export const columns: ColumnDef<Plant>[] = [
       return <span className="flex">{renderIcons()}</span>;
     },
   },
-  {
-    accessorKey: "isReadOnly",
-    header: "Action",
-    cell: ({ row }) => {
-      const plantId: string = row.getValue("id");
-      const plantName: string = row.getValue("name");
-      const plantCategory: string = row.getValue("category");
 
-      const isPotager: boolean = row.getValue("isPotager");
-
-      const renderCell = () => {
-        {
-          return Boolean(row.getValue("isReadOnly")) ? (
-            <MustLoggedAlert />
-          ) : (
-            <AddPotagerButton
-              isPotager={isPotager}
-              plantId={plantId}
-              plantName={plantName}
-              plantCategory={plantCategory}
-            />
-          );
-        }
-      };
-      return <span className="flex">{renderCell()}</span>;
-    },
-  },
   {
     accessorKey: "isPotager",
     header: "",
     cell: ({ row }) => {
-      return <></>;
+      return <div className="hidden"></div>;
     },
   },
   {

@@ -66,7 +66,7 @@ export default async function CategoriesPage({
             </p>
             <div>
               <Image
-                className="absolute z-20 translate-y-[-7rem]"
+                className="absolute z-20 translate-x-[-4rem] translate-y-[-7rem] md:translate-x-0"
                 src="/logo_helper.svg"
                 width={100}
                 height={100}
@@ -111,7 +111,7 @@ export default async function CategoriesPage({
                   <BellRing className="text-muted-foreground" />
                 </CardTitle>
                 <CardDescription>
-                  Vous avez ajouté 4 plantes récemment.
+                  Vous avez ajouté {notifications.length} plante(s) récemment.
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -28,7 +28,7 @@ export default async function ExplorerPage({
             </p>
             <div>
               <Image
-                className="absolute z-20 translate-y-[-7rem]"
+                className="absolute z-20 translate-x-[-3rem] translate-y-[-7rem] md:translate-x-0"
                 src="/logo_helper.svg"
                 width={100}
                 height={100}

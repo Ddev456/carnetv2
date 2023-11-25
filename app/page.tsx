@@ -36,10 +36,21 @@ export default function Home() {
       {/* HERO */}
       <div className="m-auto my-8 flex max-w-6xl flex-col gap-4 px-6 lg:my-16 lg:flex-row xl:my-24 xl:gap-8">
         <div className="flex flex-1 flex-col gap-4 lg:gap-6">
-          <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-6xl font-extrabold text-transparent">
-            Gérer votre potager facilement en quelques clics
+          <h1 className="mb-4 text-center text-2xl font-extrabold leading-none tracking-tight text-foreground/80 md:text-6xl">
+            Tout votre &#160;
+            <span className="underline-offset-3 underline decoration-primary/80 decoration-8">
+              potager en quelques clics
+            </span>
           </h1>
-          <h2 className="text-2xl font-bold text-foreground">
+
+          {/* <h1 className="text-center text-2xl font-extrabold md:text-6xl">
+            Gérer votre
+            <span className="bg-gradient-to-r from-lime-500 to-primary bg-clip-text text-transparent">
+              potager
+            </span>
+            en quelques clics
+          </h1> */}
+          <h2 className="text-lg font-bold text-foreground/60 md:text-2xl">
             Carnet Potager est une plateforme où vous pouvez consulter des
             fiches techniques sur les plantes potagères, créer et consulter
             votre journal de bord.
@@ -67,16 +78,16 @@ export default function Home() {
         </div>
         <div className="my-auto">
           <Image
-            className="rounded-md shadow-xl shadow-borders"
+            className="rounded-md shadow-2xl shadow-borders"
             width="560"
             height="315"
-            src="https://cdn.pixabay.com/photo/2022/04/04/07/58/seedlings-7110591_1280.jpg"
+            src="/screenshot.png"
             alt="garden photo"
           />
         </div>
       </div>
       {/* VALUES */}
-      <div className="bg-primary py-8 text-primary-foreground xl:py-16">
+      <div className="bg-primary/80 py-8 text-primary-foreground xl:py-16">
         <div className="m-auto flex max-w-5xl flex-col gap-3 px-6 xl:flex-row xl:gap-6">
           <div className="flex flex-1 flex-col items-center gap-2 text-center">
             <Shovel size={32} />
@@ -98,7 +109,7 @@ export default function Home() {
       </div>
       {/* CTA */}
       <div className="my-8 flex flex-col items-center gap-4 lg:my-16 xl:my-24">
-        <h2 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-extrabold uppercase text-transparent">
+        <h2 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-center text-xl font-extrabold uppercase text-transparent md:text-4xl">
           essayer maintenant
         </h2>
         <Link
@@ -117,7 +128,9 @@ export default function Home() {
         }}
       >
         <div className="m-auto flex max-w-5xl flex-col gap-3 px-6 xl:gap-6">
-          <h2 className="text-4xl font-extrabold">FAQ</h2>
+          <h2 className="md:text-auto text-center text-4xl font-extrabold">
+            FAQ
+          </h2>
           <Accordion type="single" collapsible className="w-full">
             {FAQValues.map((value, i) => (
               <AccordionItem value={i + value.question} key={i}>

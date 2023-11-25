@@ -15,7 +15,7 @@ export const FooterNav = () => {
   return (
     <>
       {isLandingPage ? (
-        <>
+        <div className="flex">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
             <div className="flex flex-row items-center gap-2">
               🥕
@@ -46,7 +46,7 @@ export const FooterNav = () => {
               &copy; {new Date().getFullYear()} Carnet Potager
             </Typography>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className="container fixed inset-x-0 bottom-0 m-auto flex max-w-lg justify-between gap-1 border-t border-accent bg-background py-2 md:hidden">

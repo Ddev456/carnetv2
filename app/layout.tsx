@@ -4,13 +4,13 @@ import { TailwindIndicator } from "@/components/utils/TailwindIndicator";
 import { SiteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Galindo } from "next/font/google";
+import { Galindo, Poppins } from "next/font/google";
 import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
 
-const galindo = Galindo({
+const poppins = Poppins({
   subsets: ["latin"],
   variable: "--heading-font",
   weight: "400",
@@ -36,7 +36,7 @@ export default function RootLayout({
         <body
           className={cn(
             "h-full bg-background font-heading antialiased",
-            galindo.variable
+            poppins.variable
           )}
         >
           <Providers>
