@@ -7,6 +7,7 @@ import {
 } from "../../../app/categories/[categoryId]/plants/[plantId]/plant.action";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 export const AddPotagerButton = ({
   plantId,
@@ -19,6 +20,7 @@ export const AddPotagerButton = ({
   plantCategory: string;
   isPotager: boolean;
 }) => {
+  const [isPotagerState, setIsPotagerState] = useState<boolean>(isPotager);
   const mutation = useMutation({ mutationFn: handleEventState });
   const removeMutation = useMutation({ mutationFn: handleRemovePotager });
 
@@ -33,6 +35,7 @@ export const AddPotagerButton = ({
 
     if (response?.data?.update) {
       toast.warning("Plante supprimée du potager avec succès");
+      setIsPotagerState(!isPotagerState);
     }
   };
   const handleSubmit = async () => {
@@ -60,12 +63,13 @@ export const AddPotagerButton = ({
 
     if (response?.data?.success) {
       toast.success("Plante ajoutée avec succès");
+      setIsPotagerState(!isPotagerState);
     }
   };
   // const handleSubmit = handleEventState.bind({plantId: plantId, plantName: plantName, plantCategory: plantCategory});
   return (
     <>
-      {!isPotager ? (
+      {!isPotagerState ? (
         <form action={handleSubmit}>
           <SubmitButton>Ajouter</SubmitButton>
         </form>
