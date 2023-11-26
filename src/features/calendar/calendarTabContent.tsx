@@ -11,10 +11,11 @@ import { useEventHandlerStore } from "../../../app/categories/[categoryId]/plant
 import { Calendar } from "@/components/ui/calendar";
 import { fr } from "date-fns/locale";
 import { SubmitButton } from "@/components/form/SubmitButton";
-import { DayPickerProps, Modifiers } from "react-day-picker";
 import { UpdateConfirmation } from "./updateConfirmation";
 import { MustLoggedAlert } from "@/components/ui/mustLoggedAlert";
 import { useMutation } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 type calendarType =
   | "nursery"
@@ -185,22 +186,59 @@ export const CalendarTabContent = ({
           }
           modifiersStyles={
             calendarType === "nursery"
-              ? { nursery: { backgroundColor: color } }
+              ? {
+                  nursery: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "seedling"
-              ? { seedling: { backgroundColor: color } }
+              ? {
+                  seedling: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "flowering"
-              ? { flowering: { backgroundColor: color } }
+              ? {
+                  flowering: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "harvest"
-              ? { harvest: { backgroundColor: color } }
-              : { plantation: { backgroundColor: color } }
+              ? {
+                  harvest: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
+              : {
+                  plantation: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
           }
           modifiersClassNames={{
-            selected: `bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
-            range_middle: `bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
+            selected: `!bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
+            range_middle: `!bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
           }}
         />
       ) : (
-        <p>Pas de période de semis sous abri renseignée</p>
+        <div className="flex flex-col items-center rounded-lg bg-secondary sm:min-h-[270px]">
+          <p className="text-md font-medium">
+            Pas de période{" "}
+            {calendarType === "nursery"
+              ? "de semis sous abri"
+              : calendarType === "seedling"
+              ? "de semis"
+              : calendarType === "flowering"
+              ? "de floraison"
+              : calendarType === "harvest"
+              ? "de récolte"
+              : calendarType === "plantation"
+              ? "de plantation"
+              : ""}{" "}
+            renseignée
+          </p>
+          <Image
+            src="/helper_nothing.svg"
+            alt="nothing image"
+            width={160}
+            height={160}
+          />
+        </div>
       )}
       {Array.isArray(range[1]) && (
         <Calendar
@@ -231,18 +269,33 @@ export const CalendarTabContent = ({
           }
           modifiersStyles={
             calendarType === "nursery"
-              ? { nursery: { backgroundColor: color } }
+              ? {
+                  nursery: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "seedling"
-              ? { seedling: { backgroundColor: color } }
+              ? {
+                  seedling: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "flowering"
-              ? { flowering: { backgroundColor: color } }
+              ? {
+                  flowering: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
               : calendarType === "harvest"
-              ? { harvest: { backgroundColor: color } }
-              : { plantation: { backgroundColor: color } }
+              ? {
+                  harvest: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
+              : {
+                  plantation: { backgroundColor: color },
+                  selected: { backgroundColor: bgColor },
+                }
           }
           modifiersClassNames={{
-            selected: `bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
-            range_middle: `bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
+            selected: `!bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
+            range_middle: `!bg-[${bgColor}] dark:bg-[${darkBgColor}]`,
           }}
         />
       )}
@@ -252,9 +305,9 @@ export const CalendarTabContent = ({
         <MustLoggedAlert />
       ) : (
         <form action={handleAction}>
-          <SubmitButton className="mt-4 bg-primary">
+          <Button disabled={!selectedEvent} className="mt-4 bg-primary">
             Ajouter au potager
-          </SubmitButton>
+          </Button>
         </form>
       )}
     </>

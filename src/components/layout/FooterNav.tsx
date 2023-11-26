@@ -17,12 +17,12 @@ export const FooterNav = () => {
       {isLandingPage ? (
         <div className="flex">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex flex-row items-center gap-2">
+            {/* <div className="flex flex-row items-center gap-2">
               🥕
               <Typography variant="base" as={Link} href="/">
                 {SiteConfig.title}
               </Typography>
-            </div>
+            </div> */}
             <div className="flex flex-col items-end gap-2 text-sm text-muted-foreground">
               {/* <Link className="hover:underline" href="/legal/privacy">
                 Privacy
@@ -38,7 +38,7 @@ export const FooterNav = () => {
               </Link> */}
             </div>
           </div>
-          <div className="flex w-full items-center justify-center">
+          <div className="flex w-full items-center justify-center py-6">
             <Typography
               variant="base"
               className="text-xs text-muted-foreground"
@@ -49,7 +49,7 @@ export const FooterNav = () => {
         </div>
       ) : (
         <>
-          <div className="container fixed inset-x-0 bottom-0 m-auto flex max-w-lg justify-between gap-1 border-t border-accent bg-background py-2 md:hidden">
+          <div className="container fixed inset-x-0 bottom-0 m-auto flex justify-between gap-1 border-t border-accent bg-background py-2 md:hidden">
             <Link
               href="/categories"
               className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}

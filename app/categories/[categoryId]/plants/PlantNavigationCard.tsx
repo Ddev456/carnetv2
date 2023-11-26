@@ -26,16 +26,36 @@ export default function PlantNavigationCard({
 
   if (state === "sticky") {
     return (
-      <Card className="max-w-xs flex-1">
+      <Card className="col-start-1 col-end-3 row-start-1 row-end-2 flex-1">
         <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle>{category.name}</CardTitle>
+          <CardTitle>
+            {category.name === "Légume-Grain" ? (
+              <span className="text-3xl">🫛</span>
+            ) : category.name === "Légume-Feuille" ? (
+              <span className="text-3xl">🥬</span>
+            ) : category.name === "Légume-Racine" ? (
+              <span className="text-3xl">🥕</span>
+            ) : category.name === "Légume-Fruit" ? (
+              <span className="text-3xl">🫑</span>
+            ) : category.name === "Courges & Courgettes" ? (
+              <span className="text-3xl">🍈</span>
+            ) : category.name === "Bulbes & Tubercules" ? (
+              <span className="text-3xl">🧅</span>
+            ) : category.name === "Petits fruits" ? (
+              <span className="text-3xl">🍓</span>
+            ) : (
+              ""
+            )}
+            {category.name}
+          </CardTitle>
           <Button onClick={() => setState("close")} size="sm" variant="ghost">
             <PanelLeftClose />
           </Button>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
+          liste des plantes :
           {category.plants.map((plant) => (
-            <PlantItem plant={plant} />
+            <PlantItem key={plant.id} plant={plant} />
           ))}
         </CardContent>
       </Card>

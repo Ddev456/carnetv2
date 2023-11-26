@@ -11,7 +11,8 @@ export default function layout({
   };
 }>) {
   return (
-    <div className="relative flex items-start gap-4 p-4">
+    <div className="relative grid grid-cols-8 grid-rows-4 gap-4 p-4">
+      {/* <div className="relative flex items-start gap-4 p-4"> */}
       <Suspense fallback={<PlantsNavigationSkeleton />}>
         <PlantsNavigation categoryId={params.categoryId} />
       </Suspense>
