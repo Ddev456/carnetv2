@@ -8,14 +8,9 @@ import { toast } from "sonner";
 type AddButtonProps = {
   plant: PlantInfos;
   buttonState: boolean;
-  updateButton: (value: boolean) => void;
 };
 
-export const AddButton = ({
-  plant,
-  buttonState,
-  updateButton,
-}: AddButtonProps) => {
+export const AddButton = ({ plant, buttonState }: AddButtonProps) => {
   const mutation = useMutation({ mutationFn: handleEventState });
 
   const handleAction = async () => {

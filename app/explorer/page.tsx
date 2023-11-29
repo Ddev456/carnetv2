@@ -20,7 +20,7 @@ export default async function ExplorerPage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const page = Number(searchParams.page ?? 0) ?? 0;
-  const { categories } = await getCategories({});
+  // const { categories } = await getCategories({});
   const { plants } = await getPlantsDataTable();
   const session = await getAuthSession();
   const potager = await prisma.userNotifications.findMany({
@@ -67,7 +67,7 @@ export default async function ExplorerPage({
           <Explorer
             data={{
               plants: plants,
-              categories: categories,
+              // categories: categories,
               isConnected: session?.user ? true : false,
               userPotager: userPotager,
             }}

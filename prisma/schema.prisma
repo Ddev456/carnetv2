@@ -88,6 +88,15 @@ enum CategoryState {
     PUBLIE
 }
 
+enum CategoryType {
+    LEGUMES
+    FRUITIERS
+    FLEURS
+    AROMATIQUES
+    ENGRAISVERTS
+    AUTRES
+}
+
 model Plant {
     id      String     @id @default(cuid())
     name    String
@@ -118,6 +127,8 @@ model Plant {
     efficiency   Int
     conservation Int
     isHardiness  Boolean
+
+    categoryType CategoryType @default(AUTRES)
 
     eventPlantation Int?
     eventFlowering  Int?

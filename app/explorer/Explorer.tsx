@@ -10,7 +10,7 @@ import { SheetView } from "./SheetView";
 
 type ExplorerData = {
   plants: plantsDataTable;
-  categories: CategoriesCard[];
+  // categories: CategoriesCard[];
   isConnected: Boolean;
   userPotager?: string[];
 };
@@ -26,17 +26,91 @@ type calendarType =
   | "flowering"
   | "harvest";
 
-type calendarTypesT = {
-  type: calendarType;
-  data: number[];
-  bgColor: string;
-  color: string;
-  darkBgColor: string;
-}[];
+// type calendarTypesT = {
+//   type: calendarType;
+//   data: number[];
+//   bgColor: string;
+//   color: string;
+//   darkBgColor: string;
+// };
+
+export type categoryId =
+  | "fruits"
+  | "vegetables"
+  | "herbs"
+  | "flowers"
+  | "greens"
+  | "others"
+  | "*";
+
+export type categoriesT = {
+  id: categoryId;
+  identifier: string;
+  name: string;
+  plants: plantsDataTable;
+  emoji: string;
+};
 
 export const Explorer = ({ data }: ExplorerProps) => {
-  const [selected, onSelect] = React.useState<PlantInfos>(data.plants[0]);
-  const [selectedCategory, onSelectCategory] = React.useState<string>("*");
+  const categories = [
+    {
+      id: "*",
+      identifier: "TOUT",
+      name: "Toutes les plantes",
+      plants: data.plants,
+      emoji: "🌱",
+    },
+    {
+      id: "fruits",
+      identifier: "FRUITIERS",
+      name: "Fruitiers",
+      plants: data.plants.filter((plant) => plant.categoryType === "FRUITIERS"),
+      emoji: "🍇",
+    },
+    {
+      id: "vegetables",
+      identifier: "LEGUMES",
+      name: "Légumes",
+      plants: data.plants.filter((plant) => plant.categoryType === "LEGUMES"),
+      emoji: "🥕",
+    },
+    {
+      id: "herbs",
+      identifier: "AROMATIQUES",
+      name: "Aromatiques",
+      plants: data.plants.filter(
+        (plant) => plant.categoryType === "AROMATIQUES"
+      ),
+      emoji: "🌿",
+    },
+    {
+      id: "flowers",
+      identifier: "FLEURS",
+      name: "Fleurs",
+      plants: data.plants.filter((plant) => plant.categoryType === "FLEURS"),
+      emoji: "🌸",
+    },
+    {
+      id: "greens",
+      identifier: "ENGRAISVERTS",
+      name: "Engrais verts",
+      plants: data.plants.filter(
+        (plant) => plant.categoryType === "ENGRAISVERTS"
+      ),
+      emoji: "☘️",
+    },
+    {
+      id: "others",
+      identifier: "AUTRES",
+      name: "Autres",
+      plants: data.plants.filter((plant) => plant.categoryType === "AUTRES"),
+      emoji: "📌",
+    },
+  ] as categoriesT[];
+  const [selected, onSelect] = React.useState<PlantInfos>(
+    categories[0].plants[0]
+  );
+  const [selectedCategory, onSelectCategory] = React.useState<categoryId>("*");
   const [isSelected, toggleListOfPlants] = React.useState(false);
 
   const handleListOfPlants = () => {
@@ -47,54 +121,18 @@ export const Explorer = ({ data }: ExplorerProps) => {
     onSelect(plant);
   };
 
-  const calendarTypes = [
-    {
-      type: "nursery",
-      data: selected?.nursery ?? [],
-      bgColor: "#E9C2EC",
-      color: "#A144AF",
-      darkBgColor: "#B658C4",
-    },
-    {
-      type: "seedling",
-      data: selected?.seedling ?? [],
-      bgColor: "#FFDFB5",
-      color: "#FFBA18",
-      darkBgColor: "#FFBA18",
-    },
-    {
-      type: "plantation",
-      data: selected?.plantation ?? [],
-      bgColor: "#F0E4D9",
-      color: "#E4CDB7",
-      darkBgColor: "#4D3C2F",
-    },
-    {
-      type: "flowering",
-      data: selected?.flowering ?? [],
-      bgColor: "#D5EFFF",
-      color: "#ACD8FC",
-      darkBgColor: "#104D87",
-    },
-    {
-      type: "harvest",
-      data: selected?.harvest ?? [],
-      bgColor: "#D6F1DF",
-      color: "#ADDDC0",
-      darkBgColor: "#20573E",
-    },
-  ] as calendarTypesT;
   return (
     <div className="flex flex-col gap-4">
       <PlantsComboBox
-        plants={data.plants}
+        categories={categories}
+        selectedCategory={selectedCategory}
         handleSelect={handleSelect}
         onSelectCategory={onSelectCategory}
       />
       <CategoryView
         selected={selected}
         selectedCategory={selectedCategory}
-        categories={data.categories}
+        categories={categories}
         plants={data.plants}
         handleListOfPlants={handleListOfPlants}
         onSelect={handleSelect}
@@ -106,12 +144,7 @@ export const Explorer = ({ data }: ExplorerProps) => {
           isReadOnly={!data.isConnected}
           userPotager={data.userPotager}
         />
-        <CalendarView
-          plant={selected}
-          calendarTypes={calendarTypes}
-          bgColor=""
-          darkBgColor=""
-        />
+        <CalendarView plant={selected} />
       </div>
     </div>
   );

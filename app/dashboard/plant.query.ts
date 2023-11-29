@@ -125,4 +125,5 @@ export type PlantInfos = {
   spaceBetween: number;
   spaceOnRow: number;
   type: string;
+  categoryType: string;
 };

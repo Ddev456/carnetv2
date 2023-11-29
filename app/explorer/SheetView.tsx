@@ -47,51 +47,10 @@ export const SheetView = ({
   isReadOnly,
   userPotager = [],
 }: SheetViewProps) => {
-  const [step, setStep] = React.useState(1);
-
   const checkExist = (array: string[], value: string) => {
     return array.some((id) => id === value);
   };
 
-  const [buttonState, updateButton] = React.useState<boolean>(
-    checkExist(userPotager, plant.id)
-  );
-  // const [buttonState, updateButton] = React.useState<boolean>(
-  //   userPotager.some((id) => id === plant.id)
-  // );
-
-  // const mutation = useMutation({ mutationFn: handleEventState });
-
-  // const handleAction = async () => {
-  //   const response = await mutation.mutateAsync({
-  //     plantId: plant.id,
-  //     plantName: plant.name,
-  //     plantCategory: plant.category.name,
-  //     startDate: null,
-  //     typeEvent: null,
-  //   });
-  //   if (response?.data?.error) {
-  //     toast.error("Limite d'ajout au potager atteinte ! [Mode démo]");
-  //   }
-
-  //   if (response?.data?.success) {
-  //     // updateButton(true);
-  //     toast.success("Plante ajoutée avec succès");
-  //   }
-  // };
-  // const renderButton = () => {
-  //   return buttonState === true ? (
-  //     <Button disabled variant={"secondary"}>
-  //       Ajouté
-  //     </Button>
-  //   ) : (
-  //     <form action={handleAction}>
-  //       <Button className="bg-lime-500/60 hover:bg-lime-500">
-  //         Ajouter à mon potager
-  //       </Button>
-  //     </form>
-  //   );
-  // };
   return (
     <>
       {!plant && (
@@ -110,26 +69,12 @@ export const SheetView = ({
               <span className="font-bold text-primary/60">{plant.name}</span>
             </h4>
 
-            {/* <Link
-              className={clsx(
-                buttonVariants({ variant: "default" }),
-                "group flex gap-1 transition-transform hover:scale-110"
-              )}
-              href="#"
-            >
-              <span className="font-medium uppercase">{plant?.name}</span>
-              <ArrowUpRight className="group-hover:translate-x-[0.5rem] group-hover:translate-y-[-0.5rem] group-hover:transition-transform" />
-            </Link> */}
-
-            {/* <AlertDialog onOpenChange={() => setStep(1)}>
-              <AlertDialogTrigger> */}
             {isReadOnly ? (
               <MustLoggedAlert />
             ) : (
               <AddButton
                 plant={plant}
                 buttonState={checkExist(userPotager, plant.id)}
-                updateButton={updateButton}
               />
             )}
           </div>
