@@ -21,7 +21,7 @@ const FAQValues = [
     question:
       "J'ai besoin d'aide, je souhaite faire un retour sur l'application ?",
     answer:
-      "Il est possible de faire un 'feedback' dans la section prévue à cette effet sur la plateforme.",
+      "Il est possible de faire un 'feedback' dans la section prévue à cet effet sur la plateforme.",
   },
   {
     question: "L'application est-elle gratuite?",
@@ -76,7 +76,7 @@ export default function Home() {
             </div>
           </div> */}
         </div>
-        <div className="my-auto">
+        <div className="m-auto">
           <Image
             className="rounded-md shadow-2xl shadow-borders"
             width="560"

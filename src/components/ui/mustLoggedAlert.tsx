@@ -17,7 +17,7 @@ export const MustLoggedAlert = () => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className="mt-4 bg-primary" variant="default">
-          Ajouter au potager
+          Ajouter à mon potager
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -28,7 +28,7 @@ export const MustLoggedAlert = () => {
           <AlertDialogDescription>
             Inscrivez-vous / ou connectez-vous
             <Link className="underline" href="http://localhost:3000/login">
-              ici
+              {""} ici
             </Link>
             .
           </AlertDialogDescription>

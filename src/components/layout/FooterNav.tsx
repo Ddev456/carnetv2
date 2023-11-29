@@ -51,7 +51,7 @@ export const FooterNav = () => {
         <>
           <div className="container fixed inset-x-0 bottom-0 m-auto flex justify-between gap-1 border-t border-accent bg-background py-2 md:hidden">
             <Link
-              href="/categories"
+              href="/dashboard"
               className={clsx(buttonVariants({ variant: "ghost" }), "flex-1")}
             >
               <LayoutDashboard size={16} />

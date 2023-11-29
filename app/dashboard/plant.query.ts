@@ -40,12 +40,8 @@ const COUNT_BY_PAGE = 8;
 
 export const getPlantsDataTable = async () => {
   const plants = await prisma.plant.findMany({
-    select: {
-      name: true,
+    include: {
       category: true,
-      id: true,
-      water: true,
-      exposition: true,
     },
   });
 
@@ -100,3 +96,33 @@ export type PlantsCard = Prisma.PromiseReturnType<
 export type PlantDataTable = Prisma.PromiseReturnType<
   typeof getPlants
 >["plants"];
+
+export type PlantData = Prisma.PromiseReturnType<typeof getPlantsDataTable>;
+
+export type PlantInfos = {
+  id: string;
+  name: string;
+  category: {
+    id: string;
+    name: string;
+    presentation: string;
+    image: string;
+    createdAt: Date;
+    creatorId: string;
+    state: "PUBLIE" | "BROUILLON";
+  };
+  categoryId: string;
+  water: number;
+  exposition: number;
+  nursery: number[];
+  seedling: number[];
+  flowering: number[];
+  plantation: number[];
+  harvest: number[];
+  eventFlowering: number | null;
+  eventHarvest: number | null;
+  eventPlantation: number | null;
+  spaceBetween: number;
+  spaceOnRow: number;
+  type: string;
+};

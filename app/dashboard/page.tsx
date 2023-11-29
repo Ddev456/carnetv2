@@ -4,21 +4,14 @@ import {
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 import { NotAuthenticatedCard } from "@/features/errors/NotAuthentificatedCard";
-import { CategoryPaginationButton } from "@/features/pagination/PaginationButton";
+
 import { getAuthSession } from "@/lib/auth";
-import {
-  AlertTriangle,
-  BarChart3,
-  BellRing,
-  Lightbulb,
-  Sparkles,
-} from "lucide-react";
-import { CategoryCard } from "../categories/CategoryCard";
-import { getCategories } from "../categories/category.query";
-import { getPlants } from "./[categoryId]/plants/plant.query";
-import { PlantCard } from "./[categoryId]/plants/PlantCard";
+import { BarChart3, BellRing, Sparkles } from "lucide-react";
+
+import { getPlants } from "./plant.query";
+import { PlantCard } from "./PlantCard";
 import {
   Card,
   CardContent,
@@ -83,8 +76,8 @@ export default async function CategoriesPage({
                   <Sparkles className="text-muted-foreground" />
                 </CardTitle>
                 {/* <CardDescription>
-                  Vous avez ajouté 4 plantes récemment.
-                </CardDescription> */}
+                    Vous avez ajouté 4 plantes récemment.
+                  </CardDescription> */}
               </CardHeader>
               <CardContent>
                 <Tips />
@@ -121,17 +114,17 @@ export default async function CategoriesPage({
           </div>
         </div>
         {/* {plants.length === 0 ? (
-          <Alert>
-            <AlertTriangle />
-            <AlertTitle>Aucunes catégories.</AlertTitle>
-          </Alert>
-        ) : (
-          <CategoryPaginationButton
-            baseUrl={`/categories`}
-            page={page}
-            totalPage={totalPlants}
-          />
-        )} */}
+            <Alert>
+              <AlertTriangle />
+              <AlertTitle>Aucunes catégories.</AlertTitle>
+            </Alert>
+          ) : (
+            <CategoryPaginationButton
+              baseUrl={`/categories`}
+              page={page}
+              totalPage={totalPlants}
+            />
+          )} */}
       </LayoutContent>
     </Layout>
   );

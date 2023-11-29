@@ -19,9 +19,9 @@ export const Header = async () => {
           </Typography>
           <Typography
             as={Link}
-            variant="link"
+            variant="base"
             href="/explorer"
-            className="ml-6 hidden items-center gap-1 text-muted-foreground hover:text-foreground md:flex"
+            className="ml-6 hidden items-center gap-1 font-medium text-foreground/60 transition-colors hover:text-foreground/80 active:text-foreground/100 md:flex"
           >
             <Search size={16} /> Explorer
           </Typography>
@@ -29,8 +29,8 @@ export const Header = async () => {
             <Typography
               as={Link}
               variant="link"
-              href="/categories"
-              className="hidden items-center gap-1 text-muted-foreground hover:text-foreground sm:ml-6 md:flex"
+              href="/dashboard"
+              className="ml-6 hidden items-center gap-1 font-medium text-foreground/60 transition-colors hover:text-foreground/80 active:text-foreground/100 md:flex"
             >
               <LayoutDashboard size={16} /> Mon potager
             </Typography>

@@ -1,7 +1,7 @@
 "use server";
 
 import { authenticatedAction } from "@/lib/action";
-import { getAuthSession, getRequiredAuthSession } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 

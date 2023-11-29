@@ -25,9 +25,9 @@ export const getCategories = async ({
         }
   ) satisfies Prisma.CategoryWhereInput;
 
-  const totalCategories = await prisma.category.count({
-    where: whereQuery,
-  });
+  // const totalCategories = await prisma.category.count({
+  //   where: whereQuery,
+  // });
 
   const categories = await prisma.category.findMany({
     where: whereQuery,
@@ -36,6 +36,14 @@ export const getCategories = async ({
       image: true,
       presentation: true,
       id: true,
+      plants: {
+        select: {
+          name: true,
+          thumbnail: true,
+          content: true,
+          id: true,
+        },
+      },
       creator: {
         select: {
           image: true,
@@ -49,7 +57,7 @@ export const getCategories = async ({
 
   return {
     categories,
-    totalCategories: Math.floor(totalCategories / COUNT_BY_PAGE),
+    // totalCategories: Math.floor(totalCategories / COUNT_BY_PAGE),
   };
 };
 

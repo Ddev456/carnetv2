@@ -42,7 +42,7 @@ export default function RootLayout({
           <Providers>
             <div className="relative flex min-h-screen flex-col">
               <Header />
-              <div className="flex-1">{children}</div>
+              <div className="mb-[5rem] flex-1 md:mb-0">{children}</div>
               <Footer />
             </div>
             {/* <TailwindIndicator /> */}
