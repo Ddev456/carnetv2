@@ -128,13 +128,12 @@ enum TypeEvent {
 }
 
 model UserNotifications {
-    id            String    @id @default(cuid())
-    userId        String
-    plantId       String
-    plantName     String
-    plantCategory String
-    startDate     DateTime  @default(now())
-    typeEvent     TypeEvent @default(nursery)
+    id        String    @id @default(cuid())
+    userId    String
+    plantId   String
+    plantName String
+    startDate DateTime  @default(now())
+    typeEvent TypeEvent @default(nursery)
 
     removed Boolean @default(false)
 

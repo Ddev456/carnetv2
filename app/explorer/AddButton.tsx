@@ -17,7 +17,6 @@ export const AddButton = ({ plant, buttonState }: AddButtonProps) => {
     const response = await mutation.mutateAsync({
       plantId: plant.id,
       plantName: plant.name,
-      plantCategory: plant.category.name,
       startDate: null,
       typeEvent: null,
     });

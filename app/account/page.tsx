@@ -43,7 +43,7 @@ export default async function AccountPage() {
         {session.user.role === "Admin" && (
           <Link
             className={buttonVariants({ variant: "outline", size: "lg" })}
-            href="/admin"
+            href="#"
           >
             Admin
           </Link>

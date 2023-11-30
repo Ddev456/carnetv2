@@ -33,7 +33,7 @@ export const FooterNav = () => {
               <Link className="hover:underline" href="/categories">
                 Categorys
               </Link>
-              <Link className="hover:underline" href="/admin">
+              <Link className="hover:underline" href="#">
                 Admin
               </Link> */}
             </div>

@@ -9,9 +9,6 @@ import { NotAuthenticatedCard } from "@/features/errors/NotAuthentificatedCard";
 
 import { getAuthSession } from "@/lib/auth";
 import { BarChart3, BellRing, Sparkles } from "lucide-react";
-
-import { getPlants } from "./plant.query";
-import { PlantCard } from "./PlantCard";
 import {
   Card,
   CardContent,
@@ -38,12 +35,6 @@ export default async function CategoriesPage({
 
   const { notifications } = await getNotifications({
     userId: session?.user.id,
-  });
-
-  const page = Number(searchParams.page ?? 0) ?? 0;
-  const { plants, totalPlants } = await getPlants({
-    userId: session.user.id,
-    page,
   });
 
   return (

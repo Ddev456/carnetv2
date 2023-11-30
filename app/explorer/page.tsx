@@ -4,23 +4,12 @@ import {
   LayoutHeader,
   LayoutTitle,
 } from "@/components/layout/layout";
-
-import Image from "next/image";
-import { getCategories } from "./category.query";
 import { getPlantsDataTable } from "../dashboard/plant.query";
-
 import { Explorer } from "./Explorer";
 import { getAuthSession } from "@/lib/auth";
-
 import { prisma } from "@/lib/prisma";
 
-export default async function ExplorerPage({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const page = Number(searchParams.page ?? 0) ?? 0;
-  // const { categories } = await getCategories({});
+export default async function ExplorerPage() {
   const { plants } = await getPlantsDataTable();
   const session = await getAuthSession();
   const potager = await prisma.userNotifications.findMany({

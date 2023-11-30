@@ -9,7 +9,6 @@ export const getNotifications = async ({ userId }: { userId?: string }) => {
     select: {
       plantId: true,
       plantName: true,
-      plantCategory: true,
       updatedAt: true,
     },
   });

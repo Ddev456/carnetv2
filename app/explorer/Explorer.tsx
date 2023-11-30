@@ -5,7 +5,6 @@ import { PlantsComboBox } from "./PlantsComboBox";
 import { CalendarView } from "./CalendarView";
 import { PlantInfos, plantsDataTable } from "../dashboard/plant.query";
 import { CategoryView } from "./CategoryView";
-import { CategoriesCard } from "./category.query";
 import { SheetView } from "./SheetView";
 
 type ExplorerData = {

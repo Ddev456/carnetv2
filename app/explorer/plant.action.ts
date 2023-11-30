@@ -7,74 +7,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-export const handlePlantState = authenticatedAction(
-  z.object({
-    plantId: z.string(),
-    progress: z.enum(["AJOUTE", "NONFAVORI"]),
-  }),
-  async ({ plantId, progress }, { userId }) => {
-    const updatedPlantOnUser = await prisma.plantOnUser.update({
-      where: {
-        userId_plantId: {
-          plantId,
-          userId,
-        },
-      },
-      data: {
-        progress,
-      },
-      select: {
-        plant: {
-          select: {
-            rank: true,
-            categoryId: true,
-            id: true,
-          },
-        },
-      },
-    });
-
-    const nextPlant = await prisma.plant.findFirst({
-      where: {
-        categoryId: updatedPlantOnUser.plant.categoryId,
-        rank: {
-          gt: updatedPlantOnUser.plant.rank,
-        },
-        state: {
-          not: "BROUILLON",
-        },
-      },
-      orderBy: {
-        rank: "asc",
-      },
-    });
-
-    revalidatePath(
-      `/categories/${updatedPlantOnUser.plant.categoryId}/plants/${plantId}`
-    );
-
-    if (!nextPlant) {
-      return;
-    }
-
-    redirect(
-      `/categories/${updatedPlantOnUser.plant.categoryId}/plants/${nextPlant.id}`
-    );
-  }
-);
-
 export const handleEventState = authenticatedAction(
   z.object({
     plantId: z.string(),
     plantName: z.string(),
-    plantCategory: z.string(),
     startDate: z.date().nullable(),
     typeEvent: z.enum(["nursery", "seedling", "plantation"]).nullable(),
   }),
-  async (
-    { plantId, plantName, plantCategory, startDate, typeEvent },
-    { userId }
-  ) => {
+  async ({ plantId, plantName, startDate, typeEvent }, { userId }) => {
     const isAuthorized = getRequiredAuthSession();
 
     if (!isAuthorized) {
@@ -136,37 +76,12 @@ export const handleEventState = authenticatedAction(
           },
         });
       }
-    }
-    // else if (isPotager) {
-    //   const eventId = await prisma.userNotifications.findFirst({
-    //     where: {
-    //       plantId: plantId,
-    //       userId: userId,
-    //     },
-    //     select: {
-    //       id: true,
-    //     },
-    //   });
-
-    //   if (eventId) {
-    //     await prisma.userNotifications.update({
-    //       where: {
-    //         id: eventId.id,
-    //       },
-    //       data: {
-    //         typeEvent: typeEvent || "nursery",
-    //         startDate: startDate || new Date(Date.now()),
-    //       },
-    //     });
-    //   }
-    // }
-    else {
+    } else {
       await prisma.userNotifications.create({
         data: {
           userId: userId,
           plantId: plantId,
           plantName: plantName,
-          plantCategory: plantCategory,
           typeEvent: typeEvent || "nursery",
           startDate: startDate || new Date(Date.now()),
         },

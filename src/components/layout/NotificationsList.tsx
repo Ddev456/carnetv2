@@ -15,7 +15,6 @@ type NotificationItem = {
   userId: string;
   plantId: string;
   plantName: string;
-  plantCategory: string;
   startDate: Date;
   typeEvent: TypeEvent;
   updatedAt: Date;

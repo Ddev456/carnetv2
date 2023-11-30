@@ -18,27 +18,9 @@ export const RecentNotifications = ({
         notifications?.map((notification) => {
           return (
             <div className="flex items-center">
-              {notification.plantCategory === "Légume-Grain"
-                ? "🫛"
-                : notification.plantCategory === "Légume-Feuille"
-                ? "🥬"
-                : notification.plantCategory === "Légume-Racine"
-                ? "🥕"
-                : notification.plantCategory === "Légume-Fruit"
-                ? "🫑"
-                : notification.plantCategory === "Courges & Courgettes"
-                ? "🍈"
-                : notification.plantCategory === "Bulbes & Tubercules"
-                ? "🧅"
-                : notification.plantCategory === "Petits fruits"
-                ? "🍓"
-                : ""}
               <div className="ml-4 space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {notification.plantName}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {notification.plantCategory}
                 </p>
               </div>
               <div className="ml-auto font-medium">
