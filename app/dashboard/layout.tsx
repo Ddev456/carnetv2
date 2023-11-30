@@ -6,9 +6,13 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex">
-      <Sidebar />
-      <div className="mb-[5rem] flex pt-[4rem] md:mb-0">{children}</div>
-    </section>
+    <>
+      <section className="md:flex">
+        <Sidebar />
+        {/* <div className="mb-[5rem] flex w-full pt-[4rem] md:mb-0"> */}
+        <div className="w-full pt-[4rem] md:pl-[12rem] ">{children}</div>
+        {/* </div> */}
+      </section>
+    </>
   );
 }
