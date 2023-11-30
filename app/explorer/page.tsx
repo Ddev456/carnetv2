@@ -47,13 +47,13 @@ export default async function ExplorerPage({
       <LayoutHeader>
         <LayoutTitle>Explorer</LayoutTitle>
       </LayoutHeader>
-      <LayoutContent className="flex flex-col gap-8">
-        <div className="rounded-[0.5rem] border p-8 shadow">
+      <LayoutContent className="flex flex-col gap-8 rounded-xl bg-primary/10">
+        <div className="p-8">
           <div className="flex items-center justify-between space-y-2">
             <p className="text-xl text-foreground">
               Retrouvez ici toutes les fiches des plantes potagères
             </p>
-            <div>
+            {/* <div>
               <Image
                 className="z-20 translate-y-[-7rem]"
                 src="/logo_helper.svg"
@@ -61,8 +61,7 @@ export default async function ExplorerPage({
                 height={120}
                 alt="helper_logo"
               />
-              {/* <span className="absolute translate-y-[-5rem] rounded-full bg-muted p-10"></span> */}
-            </div>
+            </div> */}
           </div>
           <Explorer
             data={{

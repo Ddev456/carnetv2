@@ -121,6 +121,9 @@ export const CultureDisplay = ({ period }: CultureDisplayProps) => {
           },
         },
       },
+      y: {
+        display: false,
+      },
     },
   };
 

@@ -4,7 +4,7 @@
 
 @import '../node_modules/react-day-picker';
 
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 98%;
     --foreground: 0 85% 5%;
@@ -53,8 +53,58 @@
 
     --borders: 0, 0%, 100%, 0.102;
   }
-}
+} */
 
+@layer base {
+  :root {
+    --background: 40 29% 90%;
+    --foreground: 43 28% 5%;
+    --card: 40 29% 90%;
+    --card-foreground: 43 28% 5%;
+    --popover: 40 29% 90%;
+    --popover-foreground: 43 28% 5%;
+    --primary: 220 94% 75%;
+    --primary-foreground: 43 28% 5%;
+    --secondary: 40 96% 82%;
+    --secondary-foreground: 43 28% 5%;
+    --muted: 40 29% 20%;
+    --muted-foreground: 43 28% 70%;
+    --accent: 250 29% 48%;
+    --accent-foreground: 40 29% 90%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 43 28% 5%;
+    --border: 40 29% 20%;
+    --input: 40 29% 20%;
+    --ring: 250 29% 40%;
+    --radius: 0.5rem;
+
+    --borders: 0, 0%, 0%, 0.102;
+  }
+ 
+  .dark {
+    --background: 40 29% 10%;
+    --foreground: 43 28% 95%;
+    --card: 40 29% 10%;
+    --card-foreground: 43 28% 95%;
+    --popover: 40 29% 10%;
+    --popover-foreground: 43 28% 95%;
+    --primary: 220 94% 25%;
+    --primary-foreground: 43 28% 95%;
+    --secondary: 40 96% 18%;
+    --secondary-foreground: 43 28% 95%;
+    --muted: 40 29% 80%;
+    --muted-foreground: 43 28% 95%;
+    --accent: 250 29% 52%;
+    --accent-foreground: 43 28% 95%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 44 29% 10%;
+    --border: 40 29% 60%;
+    --input: 40 29% 80%;
+    --ring: 250 29% 60%;
+
+    --borders: 0, 0%, 100%, 0.102;
+  }
+}
 
 @layer base {
   * {

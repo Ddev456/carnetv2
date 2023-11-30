@@ -50,7 +50,7 @@ export const CalendarView = ({
 // darkBgColor,
 CalendarViewProps) => {
   return (
-    <div className="min-h-[300px]">
+    <div className="min-h-[300px] bg-secondary/20">
       <CultureDisplay
         period={{
           name: plant?.name || "",

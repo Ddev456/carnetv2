@@ -138,7 +138,7 @@ export const Explorer = ({ data }: ExplorerProps) => {
         onSelect={handleSelect}
         onSelectCategory={onSelectCategory}
       />
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-4">
         <SheetView
           plant={selected}
           isReadOnly={!data.isConnected}
