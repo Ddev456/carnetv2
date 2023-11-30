@@ -9,6 +9,7 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
+import { Sidebar } from "./sidebar/Sidebar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -35,16 +36,17 @@ export default function RootLayout({
         </head>
         <body
           className={cn(
-            "h-full bg-background font-heading antialiased",
+            "h-full bg-secondary/60 font-heading antialiased",
             poppins.variable
           )}
         >
           <Providers>
-            <div className="relative flex min-h-screen flex-col">
+            <div className="min-h-screen">
               <Header />
-              <div className="mb-[5rem] flex-1 md:mb-0">{children}</div>
+              {children}
               <Footer />
             </div>
+
             {/* <TailwindIndicator /> */}
             {modal}
           </Providers>

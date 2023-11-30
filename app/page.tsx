@@ -78,14 +78,14 @@ export default function Home() {
         </div>
         <div className="m-auto">
           <Image
-            className="hidden rounded-md shadow-2xl shadow-borders dark:block"
+            className="hidden rounded-xl shadow-2xl shadow-borders dark:block"
             width="660"
             height="415"
             src="/app_dark.png"
             alt="garden photo"
           />
           <Image
-            className="rounded-md shadow-2xl shadow-borders dark:hidden"
+            className="rounded-xl shadow-2xl shadow-borders dark:hidden"
             width="660"
             height="415"
             src="/app_light.png"
