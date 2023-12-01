@@ -7,6 +7,10 @@ const nextConfig = {
         hostname: "cdn.pixabay.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
 };

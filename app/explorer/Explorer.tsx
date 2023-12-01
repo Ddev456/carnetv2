@@ -6,6 +6,8 @@ import { CalendarView } from "./CalendarView";
 import { PlantInfos, plantsDataTable } from "../dashboard/plant.query";
 import { CategoryView } from "./CategoryView";
 import { SheetView } from "./SheetView";
+import { useSidebarStore } from "@/components/layout/Sidebar.store";
+import clsx from "clsx";
 
 type ExplorerData = {
   plants: plantsDataTable;
@@ -51,6 +53,8 @@ export type categoriesT = {
 };
 
 export const Explorer = ({ data }: ExplorerProps) => {
+  const { state } = useSidebarStore();
+
   const categories = [
     {
       id: "*",
@@ -121,7 +125,12 @@ export const Explorer = ({ data }: ExplorerProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className={clsx("flex w-full flex-col gap-4 pt-[4rem]", {
+        "md:pl-[4rem]": state,
+        "md:pl-[12rem]": !state,
+      })}
+    >
       <PlantsComboBox
         categories={categories}
         selectedCategory={selectedCategory}

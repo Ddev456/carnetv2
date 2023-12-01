@@ -24,6 +24,7 @@ import clsx from "clsx";
 import { LogOut, User2 } from "lucide-react";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import Image from "next/image.js";
 import Link from "next/link";
 
 export type LoggedInButtonProps = {
@@ -40,23 +41,37 @@ export const LoggedInButton = (props: LoggedInButtonProps) => {
   return (
     <DropdownMenu>
       <AlertDialog>
-        <DropdownMenuTrigger asChild>
-          <Button
+        <DropdownMenuTrigger
+          className="rounded-full border border-borders"
+          asChild
+        >
+          {/* <Button
             className="bg-transparent text-background hover:bg-muted md:flex md:bg-foreground"
             variant="default"
             size="sm"
-          >
-            <Avatar className="relative mr-2 h-6 w-6">
-              <AvatarFallback>{props.user?.name?.[0]}</AvatarFallback>
-              {props.user.image && (
-                <AvatarImage
-                  src={props.user.image}
-                  alt={props.user.name ?? "user picture"}
-                />
-              )}
-            </Avatar>
-            <span className="hidden md:block">{props.user.name}</span>
-          </Button>
+          > */}
+          {/* <Avatar className="relative h-6 w-6 overflow-visible">
+            <AvatarFallback>{props.user?.name?.[0]}</AvatarFallback>
+            {props.user.image && (
+              <AvatarImage
+                src={props.user.image}
+                alt={props.user.name ?? "user picture"}
+              />
+            )}
+            <span className="absolute left-7 top-0  h-3.5 w-3.5 rounded-full border-2 border-white bg-green-400 dark:border-gray-800"></span>
+          </Avatar> */}
+          {/* <span className="hidden md:block">{props.user.name}</span> */}
+          {/* </Button> */}
+          <div className="relative cursor-pointer">
+            <Image
+              className="h-8 w-8 rounded-full"
+              src={props.user.image || ""}
+              alt="avatar"
+              width={26}
+              height={26}
+            />
+            <span className="absolute left-6 top-0 h-3.5 w-3.5 rounded-full border-2 border-borders bg-primary"></span>
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem

@@ -5,7 +5,6 @@ import { getAuthSession } from "@/lib/auth";
 import { SiteConfig } from "@/lib/site-config";
 import Link from "next/link";
 import { NotificationsButton } from "./NotificationsButton";
-import { LayoutDashboard, Search, ToggleLeft } from "lucide-react";
 import { ToggleSidebar } from "./ToggleSidebar";
 import { MobileNav } from "./MobileNav";
 

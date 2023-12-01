@@ -7,7 +7,7 @@ export const Layout = (props: ComponentPropsWithoutRef<"div">) => {
     <div
       {...props}
       className={cn(
-        "max-w-[85rem] flex-wrap w-full flex gap-4 m-auto px-4 mt-4",
+        "max-w-[85rem] flex-wrap w-full flex gap-4 m-auto pt-[4rem] px-4 mt-4",
         props.className
       )}
     />

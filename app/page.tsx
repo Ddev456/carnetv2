@@ -32,7 +32,7 @@ const FAQValues = [
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full">
       {/* HERO */}
       <div className="m-auto my-8 flex max-w-6xl flex-col gap-4 px-6 lg:my-16 lg:flex-row xl:my-24 xl:gap-8">
         <div className="flex flex-1 flex-col gap-4 lg:gap-6">

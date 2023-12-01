@@ -3,7 +3,7 @@
 import React from "react";
 import clsx from "clsx";
 import { useSidebarStore } from "@/components/layout/Sidebar.store";
-
+import { Session } from "next-auth";
 import {
   Tooltip,
   TooltipContent,
@@ -11,24 +11,34 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
+import { AuthButton } from "@/features/auth/AuthButton";
+import { LoggedInButton } from "@/features/auth/LoggedInButton";
 
-export const Sidebar = () => {
+type SidebarProps = {
+  user?: Session["user"];
+};
+
+export const Sidebar = ({ user }: SidebarProps) => {
   const { state } = useSidebarStore();
-
+  if (!user) return;
   return (
     <div
       className={clsx(
         "duration-600 text-semibold text-md fixed top-0 hidden h-screen border-r border-borders bg-background pt-[4rem] text-foreground/80 transition-all md:flex md:flex-col md:items-center md:justify-between md:gap-8 md:space-y-8 md:px-4 md:pb-8",
         {
-          "w-[5%] group hover:w-[15%]": state,
+          "w-[4rem] group hover:w-[12rem]": state,
         },
         {
-          "w-[15%]": !state,
+          "w-[12rem]": !state,
         }
       )}
     >
-      <ul className="flex w-full flex-col items-center justify-around gap-2">
-        <li className={clsx("w-full rounded-xl py-2 hover:bg-secondary/50")}>
+      <ul className="flex w-full flex-col items-center justify-around gap-2 pt-[8rem]">
+        <li
+          className={clsx("w-full rounded-xl py-2 hover:bg-secondary/50", {
+            hidden: !user,
+          })}
+        >
           <Link
             href="/dashboard"
             className={clsx(
@@ -98,12 +108,16 @@ export const Sidebar = () => {
                 hidden: state,
               })}
             >
-              Explorer
+              Légumothèque
             </span>
           </Link>
         </li>
-        <li className={clsx("w-full rounded-xl py-2 hover:bg-secondary/50")}>
-          <a
+        <li
+          className={clsx("w-full rounded-xl py-2 hover:bg-secondary/50", {
+            hidden: !user,
+          })}
+        >
+          <Link
             href="#"
             className={clsx(
               "sidebar-menu-link flex items-center justify-start gap-4"
@@ -133,17 +147,17 @@ export const Sidebar = () => {
                 hidden: state,
               })}
             >
-              Journal
+              Mon Journal
             </span>
-          </a>
+          </Link>
         </li>
       </ul>
       <nav
-        className={clsx("bottom-0 flex items-center justify-center", {
+        className={clsx("bottom-0 flex items-center justify-center gap-1", {
           "flex-col": state,
         })}
       >
-        <a
+        {/* <a
           href="#"
           className={clsx(
             "flex items-center justify-start gap-4 py-2 hover:bg-secondary/50"
@@ -179,33 +193,35 @@ export const Sidebar = () => {
               />
             </svg>
           </span>
-        </a>
+        </a> */}
 
         <a
           href="#"
           className={clsx(
-            "flex items-center justify-start gap-4 py-2 hover:bg-secondary/50"
+            "flex items-center justify-start gap-4 pt-2 hover:bg-secondary/50"
           )}
         >
           <span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-settings stroke-foreground/60"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                  </svg>
+                  <Link href="/account/settings">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-settings stroke-foreground/60"
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                      <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                    </svg>
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Paramètres</p>
@@ -214,6 +230,7 @@ export const Sidebar = () => {
             </TooltipProvider>
           </span>
         </a>
+        {user && <LoggedInButton user={user} />}
       </nav>
     </div>
   );

@@ -9,7 +9,9 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
-import { Sidebar } from "./sidebar/Sidebar";
+import { Sidebar } from "../src/components/layout/Sidebar";
+import { getAuthSession } from "@/lib/auth";
+import clsx from "clsx";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,12 +24,14 @@ export const metadata: Metadata = {
   description: SiteConfig.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   modal,
 }: PropsWithChildren<{
   modal?: ReactNode;
 }>) {
+  const session = await getAuthSession();
+
   return (
     <>
       <html lang="fr" className="h-full" suppressHydrationWarning>
@@ -43,7 +47,11 @@ export default function RootLayout({
           <Providers>
             <div className="min-h-screen">
               <Header />
-              {children}
+              <section className="md:flex">
+                <Sidebar user={session?.user} />
+
+                {children}
+              </section>
               <Footer />
             </div>
 
