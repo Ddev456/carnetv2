@@ -6,12 +6,7 @@ import Link from "next/link";
 import { LoggedInButton } from "@/features/auth/LoggedInButton";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { DashboardIcon } from "./icons/DashboardIcon";
-import { LegumothequeIcon } from "./icons/LegumothequeIcon";
-import { JournalIcon } from "./icons/JournalIcon";
 import { ThemeToggle } from "../theme/ThemeToggle";
-import { NotificationsButton } from "./NotificationsButton";
-import { Notifications } from "@/db/query/user.query";
 import { SIDEBARITEMS } from "./constants";
 
 export const SideBar = () => {
