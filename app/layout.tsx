@@ -53,7 +53,7 @@ export default async function RootLayout({
                 </>
               )}
               <main className="w-full">{children}</main>
-              <FooterNav />
+              {/* <FooterNav /> */}
             </section>
           </Providers>
         </body>
