@@ -7,10 +7,11 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
-import { Sidebar } from "../src/components/layout/SideBar";
+
 import { getAuthSession } from "@/lib/auth";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { FooterNav } from "@/components/layout/FooterNav";
+import { Sidebar } from "@/components/Sidebar";
 
 const poppins = Poppins({
   subsets: ["latin"],
