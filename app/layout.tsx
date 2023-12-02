@@ -7,7 +7,7 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
-import { SideBar } from "../src/components/layout/SideBar";
+import { Sidebar } from "../src/components/layout/SideBar";
 import { getAuthSession } from "@/lib/auth";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { FooterNav } from "@/components/layout/FooterNav";
@@ -48,7 +48,7 @@ export default async function RootLayout({
               {session?.user && (
                 <>
                   <MobileNav />
-                  <SideBar />
+                  <Sidebar />
                 </>
               )}
               <main className="w-full">{children}</main>

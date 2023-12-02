@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "../theme/ThemeToggle";
 import { SIDEBARITEMS } from "./constants";
 
-export const SideBar = () => {
+export const Sidebar = () => {
   const session = useSession();
   const user = session.data?.user;
   const [isCollapsed, toggle] = useState(false);
