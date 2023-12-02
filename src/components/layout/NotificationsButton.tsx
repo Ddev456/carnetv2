@@ -1,8 +1,6 @@
-import { BellDot } from "lucide-react";
+"use client";
 
-import { Button, buttonVariants } from "../ui/button";
-import { prisma } from "@/lib/prisma";
-
+import { buttonVariants } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,30 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getAuthSession } from "@/lib/auth";
-import { NotificationsList } from "./NotificationsList";
 import clsx from "clsx";
+import { Notifications } from "@/db/query/user.query";
 
-export const NotificationsButton = async () => {
-  const session = await getAuthSession();
+type NotificationButtonProps = {
+  notifications: Notifications;
+};
 
-  const user = session?.user;
-
-  if (!user) {
-    return <></>;
-  }
-
-  const userId = session.user.id;
-
-  const notifications = await prisma.userNotifications.findMany({
-    where: {
-      userId: userId,
-    },
-    orderBy: {
-      updatedAt: "asc",
-    },
-  });
-
+export const NotificationsButton = ({
+  notifications,
+}: NotificationButtonProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -49,10 +33,10 @@ export const NotificationsButton = async () => {
           width="28"
           height="28"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
@@ -64,7 +48,58 @@ export const NotificationsButton = async () => {
       <DropdownMenuContent className="translate-x-[-4rem]">
         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-borders" />
-        <NotificationsList notifications={notifications} />
+        <DropdownMenuItem>
+          <ul className="flex flex-col gap-2">
+            <li className="flex items-center">
+              {/* <div className="flex"> */}
+              <div className="relative h-auto w-[3rem]">
+                {/* emoji */}{" "}
+                <span className="h-full w-full rounded bg-primary/80 p-1.5">
+                  {" "}
+                  🥕{" "}
+                </span>
+                <span className="absolute bottom-0 left-4 h-3.5 w-3.5 translate-y-[0.5rem]">
+                  ➕
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <p className="text-md">
+                  <span className="font-semibold text-accent/80">
+                    {" "}
+                    Potager :{" "}
+                  </span>{" "}
+                  Tomate ajouté(e)
+                </p>
+                <span className="text-accent/50">il y a 2 min</span>
+              </div>
+            </li>
+            <li className="flex items-center">
+              {/* <div className="flex"> */}
+              <div className="relative h-auto w-[3rem]">
+                {/* emoji */}{" "}
+                <span className="h-full w-full rounded bg-primary/80 p-1.5">
+                  {" "}
+                  ✏️{" "}
+                </span>
+                <span className="absolute bottom-0 left-4 h-3.5 w-3.5 translate-y-[0.5rem]">
+                  ➕
+                </span>
+              </div>
+              {/* </div> */}
+              <div className="flex flex-col">
+                <p className="text-md">
+                  {" "}
+                  <span className="font-semibold text-accent/80">
+                    {" "}
+                    Journal :{" "}
+                  </span>{" "}
+                  acheter du terreau
+                </p>
+                <span className="text-accent/50">il y a 47 min</span>
+              </div>
+            </li>
+          </ul>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

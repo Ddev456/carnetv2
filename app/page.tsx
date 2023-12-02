@@ -32,7 +32,7 @@ const FAQValues = [
 
 export default function Home() {
   return (
-    <div className="w-full">
+    <>
       {/* HERO */}
       <div className="m-auto my-8 flex max-w-6xl flex-col gap-4 px-6 lg:my-16 lg:flex-row xl:my-24 xl:gap-8">
         <div className="flex flex-1 flex-col gap-4 lg:gap-6">
@@ -44,37 +44,37 @@ export default function Home() {
           </h1>
 
           {/* <h1 className="text-center text-2xl font-extrabold md:text-6xl">
-            Gérer votre
-            <span className="bg-gradient-to-r from-lime-500 to-primary bg-clip-text text-transparent">
-              potager
-            </span>
-            en quelques clics
-          </h1> */}
+              Gérer votre
+              <span className="bg-gradient-to-r from-lime-500 to-primary bg-clip-text text-transparent">
+                potager
+              </span>
+              en quelques clics
+            </h1> */}
           <h2 className="text-lg font-bold text-foreground/60 md:text-2xl">
             Carnet Potager est une plateforme où vous pouvez consulter des
             fiches techniques sur les plantes potagères, créer et consulter
             votre journal de bord.
           </h2>
           {/* <div className="flex items-center gap-8">
-            <div className="flex">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <Avatar key={i} className="-mr-4">
-                  <AvatarFallback>{i + 1}</AvatarFallback>
-                  <AvatarImage src={`/images/review/${(i % 4) + 1}.png`} />
-                </Avatar>
-              ))}
-            </div>
-            <div className="flex flex-col gap-0.5 text-yellow-500 dark:text-yellow-400">
-              <p className="whitespace-nowrap  font-extrabold">
-                +500 teachers trust us.
-              </p>
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={32} fill="currentColor" />
+              <div className="flex">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <Avatar key={i} className="-mr-4">
+                    <AvatarFallback>{i + 1}</AvatarFallback>
+                    <AvatarImage src={`/images/review/${(i % 4) + 1}.png`} />
+                  </Avatar>
                 ))}
               </div>
-            </div>
-          </div> */}
+              <div className="flex flex-col gap-0.5 text-yellow-500 dark:text-yellow-400">
+                <p className="whitespace-nowrap  font-extrabold">
+                  +500 teachers trust us.
+                </p>
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} size={32} fill="currentColor" />
+                  ))}
+                </div>
+              </div>
+            </div> */}
         </div>
         <div className="m-auto">
           <Image
@@ -123,7 +123,7 @@ export default function Home() {
           href="/explorer"
           className={cn(buttonVariants(), "px-6 py-8 text-xl font-bold")}
         >
-          COMMENCER
+          EXPLORER
         </Link>
       </div>
       {/* FAQ */}
@@ -152,6 +152,6 @@ export default function Home() {
           </Accordion>
         </div>
       </div>
-    </div>
+    </>
   );
 }

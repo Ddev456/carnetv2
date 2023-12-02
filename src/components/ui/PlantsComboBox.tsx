@@ -17,14 +17,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { PlantInfos, plantsDataTable } from "../dashboard/plant.query";
-import { categoriesT, categoryId } from "./Explorer";
+import { categoriesT, categoryId } from "../explorer/Explorer";
+import { type Plant } from "@/db/query/plant.query";
 
 interface PlantsComboboxProps {
   categories: categoriesT[];
   selectedCategory: categoryId;
-  // plants: plantsDataTable;
-  handleSelect: (plant: PlantInfos) => void;
+  handleSelect: (plant: Plant) => void;
   onSelectCategory: (category: categoryId) => void;
 }
 
@@ -67,7 +66,7 @@ export const PlantsComboBox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between border border-borders bg-primary/10 shadow transition-colors hover:bg-primary/20 hover:text-foreground md:w-[45%]"
+          className="justify-between border border-borders bg-primary/10 shadow transition-colors hover:bg-primary/20 hover:text-foreground md:w-[45%]"
         >
           {value
             ? categories.find((cat) => cat.id === selectedCategory)?.name

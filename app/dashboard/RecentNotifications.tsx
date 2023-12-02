@@ -1,11 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
-import { NotificationsType } from "./notifications.action";
+import { type Notifications } from "@/db/query/user.query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
 type RecentNotificationsProps = {
-  notifications: NotificationsType | null;
+  notifications: Notifications | null;
 };
 
 export const RecentNotifications = ({

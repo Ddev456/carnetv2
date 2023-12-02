@@ -1,5 +1,4 @@
 import React from "react";
-import { PlantInfos } from "../dashboard/plant.query";
 import {
   Tooltip,
   TooltipContent,
@@ -7,29 +6,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import {
-  AlignHorizontalSpaceAround,
-  ArrowUpRight,
-  CloudSun,
-  Droplets,
-  MousePointerSquareDashed,
-  Space,
-  Sprout,
-} from "lucide-react";
 import Image from "next/image";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import clsx from "clsx";
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Helper } from "./Helper";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { handleEventState } from "./plant.action";
 import { MustLoggedAlert } from "@/components/ui/mustLoggedAlert";
-import { AddButton } from "./AddButton";
+import { AddButton } from "../ui/AddButton";
+import { type Plant } from "@/db/query/plant.query";
 
 type SheetViewProps = {
-  plant: PlantInfos;
+  plant: Plant;
   isReadOnly: Boolean;
   userPotager?: string[];
 };

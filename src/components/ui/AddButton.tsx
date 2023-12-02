@@ -1,8 +1,8 @@
 import React from "react";
-import { PlantInfos } from "../dashboard/plant.query";
+import { type PlantInfos } from "../../../app/explorer/plant.type";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { handleEventState } from "./plant.action";
+import { handleEventState } from "../../../app/explorer/plant.action";
 import { toast } from "sonner";
 
 type AddButtonProps = {

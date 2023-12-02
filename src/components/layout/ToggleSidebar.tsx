@@ -3,18 +3,17 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { AlignJustify, AlignLeft } from "lucide-react";
-import { useSidebarStore } from "./Sidebar.store";
+import { useSideBarStore } from "@/store/SideBarStore";
 
 export const ToggleSidebar = () => {
-  //   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { state, setState } = useSidebarStore();
+  const { isOpen, toggle } = useSideBarStore();
   return (
     <Button
       variant={"ghost"}
       className="hidden hover:bg-primary/10 hover:text-foreground md:flex"
-      onClick={() => setState(!state)}
+      onClick={() => toggle()}
     >
-      {state ? <AlignLeft size={24} /> : <AlignJustify size={24} />}
+      {isOpen ? <AlignLeft size={24} /> : <AlignJustify size={24} />}
     </Button>
   );
 };

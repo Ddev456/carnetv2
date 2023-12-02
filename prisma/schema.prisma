@@ -63,7 +63,8 @@ model User {
 
     accounts     Account[]
     sessions     Session[]
-    plantsEvents UserNotifications[]
+    plantsEvents Notification[]
+    tasks        Task[]
 }
 
 enum CategoryType {
@@ -114,6 +115,7 @@ model Plant {
 
     createdAt  DateTime @default(now())
     categoryId String
+    tasks      Task[]
 }
 
 enum PlantState {
@@ -127,7 +129,7 @@ enum TypeEvent {
     plantation
 }
 
-model UserNotifications {
+model Notification {
     id        String    @id @default(cuid())
     userId    String
     plantId   String
@@ -140,4 +142,33 @@ model UserNotifications {
     updatedAt DateTime @default(now())
 
     user User @relation(fields: [userId], references: [id])
+}
+
+enum TaskCategory {
+    ARROSAGE
+    BOUTURAGE
+    FLORAISON
+    GERMINATION
+    PLANTATION
+    REMPOTAGE
+    SEMISEXTERIEUR
+    SEMISSOUSABRI
+    TAILLE
+    RECOLTE
+    DIVERS
+}
+
+model Task {
+    id          String       @id @default(cuid())
+    description String?
+    category    TaskCategory @default(DIVERS)
+    startDate   DateTime     @default(now())
+    plantId     String?
+    userId      String
+    isDone      Boolean      @default(false)
+
+    updateAt DateTime @default(now())
+
+    user  User   @relation(fields: [userId], references: [id])
+    plant Plant? @relation(fields: [plantId], references: [id])
 }

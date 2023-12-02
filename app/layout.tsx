@@ -1,17 +1,20 @@
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { TailwindIndicator } from "@/components/utils/TailwindIndicator";
 import { SiteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { Galindo, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { PropsWithChildren, ReactNode } from "react";
 import { Providers } from "./Providers";
 import "./code.css";
 import "./globals.css";
-import { Sidebar } from "../src/components/layout/Sidebar";
+import { Sidebar } from "../src/components/Sidebar";
+import { useSideBarStore } from "@/store/SideBarStore";
+import StoreInitializer from "@/store/StoreInitializer";
+import { SideBar } from "../src/components/layout/SideBar";
+import { getUserNotifications } from "@/db/query/user.query";
 import { getAuthSession } from "@/lib/auth";
-import clsx from "clsx";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,7 +34,6 @@ export default async function RootLayout({
   modal?: ReactNode;
 }>) {
   const session = await getAuthSession();
-
   return (
     <>
       <html lang="fr" className="h-full" suppressHydrationWarning>
@@ -45,18 +47,26 @@ export default async function RootLayout({
           )}
         >
           <Providers>
+            <section className="relative flex">
+              <Header />
+              {session?.user && (
+                <>
+                  <MobileNav />
+                  <SideBar />
+                </>
+              )}
+              <main className="w-full">{children}</main>
+            </section>
+            {/* <StoreInitializer state={false} />
             <div className="min-h-screen">
               <Header />
               <section className="md:flex">
-                <Sidebar user={session?.user} />
-
+                <Sidebar />
                 {children}
               </section>
               <Footer />
             </div>
-
-            {/* <TailwindIndicator /> */}
-            {modal}
+            {modal} */}
           </Providers>
         </body>
       </html>

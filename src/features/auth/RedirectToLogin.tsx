@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 export const RedirectToLogin = () => {
   return (
     <Link className={buttonVariants({ variant: "secondary" })} href="/login">
-      Connexion
+      Commencer
     </Link>
   );
 };

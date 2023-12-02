@@ -1,16 +1,12 @@
+"use client";
+
 import type { ComponentPropsWithoutRef } from "react";
 import { cn } from "../../lib/utils";
 import { Typography } from "../ui/typography";
 
 export const Layout = (props: ComponentPropsWithoutRef<"div">) => {
   return (
-    <div
-      {...props}
-      className={cn(
-        "max-w-[85rem] flex-wrap w-full flex gap-4 m-auto pt-[4rem] px-4 mt-4",
-        props.className
-      )}
-    />
+    <div {...props} className={cn("flex flex-col gap-4", props.className)} />
   );
 };
 

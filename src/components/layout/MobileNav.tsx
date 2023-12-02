@@ -1,247 +1,199 @@
 "use client";
 
-import React from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { buttonVariants } from "../ui/button";
-import { AlignJustify, X } from "lucide-react";
-import clsx from "clsx";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Typography } from "../ui/typography";
-import { SiteConfig } from "@/lib/site-config";
+import { usePathname } from "next/navigation";
+import { SIDEBARITEMS } from "./constants";
+import { motion, useCycle } from "framer-motion";
+import { ThemeToggle } from "../theme/ThemeToggle";
+import { NotificationsButton } from "./NotificationsButton";
+import { LoggedInButton } from "@/features/auth/LoggedInButton";
+import { Notifications } from "@/db/query/user.query";
+import { useSession } from "next-auth/react";
+
+export type SideNavItem = {
+  name: string;
+  href: string;
+  icon?: JSX.Element;
+};
+
+const sidebar = {
+  open: (height = 1000) => ({
+    clipPath: `circle(${height * 2 + 200}px at 100% 0)`,
+    transition: {
+      type: "spring",
+      stiffness: 20,
+      restDelta: 2,
+    },
+  }),
+  closed: {
+    clipPath: "circle(0px at 100% 0)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 40,
+    },
+  },
+};
 
 export const MobileNav = () => {
-  const [isOpen, trigger] = React.useState(false);
-  return (
-    <Sheet onOpenChange={(open) => trigger(open)}>
-      <SheetTrigger
-        className={clsx(
-          buttonVariants({ variant: "ghost" }),
-          "my-auto flex hover:bg-primary/10 hover:text-foreground md:hidden"
-        )}
-      >
-        {isOpen ? <X size={24} /> : <AlignJustify size={24} />}
-      </SheetTrigger>
-      <SheetContent side={"left"}>
-        <SheetHeader>
-          <SheetTitle>
-            <Typography variant="h3" as={Link} href="/">
-              {SiteConfig.title} 🥕
-            </Typography>
-          </SheetTitle>
-          <SheetDescription>
-            <div
-              className={clsx(
-                "duration-600 text-semibold text-md flex h-[80vh] flex-col items-center justify-between gap-8 space-y-8 border-r border-borders bg-background px-4 py-8 text-foreground/80 transition-all"
-              )}
-            >
-              <ul className="flex w-full flex-col items-center justify-around gap-2">
-                <li
-                  className={clsx(
-                    "w-full rounded-xl py-2 hover:bg-secondary/50"
-                  )}
-                >
-                  <Link
-                    href="/dashboard"
-                    className={clsx(
-                      "sidebar-menu-link flex items-center justify-start gap-4"
-                    )}
-                  >
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-fence stroke-foreground/60"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M4 12v4h16v-4z" />
-                        <path d="M6 16v4h4v-4m0 -4v-6l-2 -2l-2 2v6" />
-                        <path d="M14 16v4h4v-4m0 -4v-6l-2 -2l-2 2v6" />
-                      </svg>
-                    </span>
-                    <span
-                      className={clsx("text-center group-hover:inline-flex")}
-                    >
-                      Mon potager
-                    </span>
-                  </Link>
-                </li>
-                <li
-                  className={clsx(
-                    "w-full rounded-xl py-2 hover:bg-secondary/50"
-                  )}
-                >
-                  <Link
-                    href="/explorer"
-                    className={clsx(
-                      "sidebar-menu-link flex items-center justify-start gap-4"
-                    )}
-                  >
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-books stroke-foreground/60"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                        <path d="M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-                        <path d="M5 8h4" />
-                        <path d="M9 16h4" />
-                        <path d="M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z" />
-                        <path d="M14 9l4 -1" />
-                        <path d="M16 16l3.923 -.98" />
-                      </svg>
-                      {/* <Search size={20} /> */}
-                    </span>
-                    <span
-                      className={clsx("text-center group-hover:inline-flex")}
-                    >
-                      Explorer
-                    </span>
-                  </Link>
-                </li>
-                <li
-                  className={clsx(
-                    "w-full rounded-xl py-2 hover:bg-secondary/50"
-                  )}
-                >
-                  <a
-                    href="#"
-                    className={clsx(
-                      "sidebar-menu-link flex items-center justify-start gap-4"
-                    )}
-                  >
-                    <span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-layout-dashboard stroke-foreground/60"
-                        width="28"
-                        height="28"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M4 4h6v8h-6z" />
-                        <path d="M4 16h6v4h-6z" />
-                        <path d="M14 12h6v8h-6z" />
-                        <path d="M14 4h6v4h-6z" />
-                      </svg>
-                    </span>
-                    <span
-                      className={clsx("text-center group-hover:inline-flex")}
-                    >
-                      Journal
-                    </span>
-                  </a>
-                </li>
-              </ul>
-              <nav
-                className={clsx("bottom-0 flex items-center justify-center")}
-              >
-                <a
-                  href="#"
-                  className={clsx(
-                    "flex items-center justify-start gap-4 py-2 hover:bg-secondary/50"
-                  )}
-                >
-                  <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-adjustments-filled cursor-not-allowed stroke-foreground/60"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path
-                        d="M6 3a1 1 0 0 1 .993 .883l.007 .117v3.171a3.001 3.001 0 0 1 0 5.658v7.171a1 1 0 0 1 -1.993 .117l-.007 -.117v-7.17a3.002 3.002 0 0 1 -1.995 -2.654l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-3.17a1 1 0 0 1 1 -1z"
-                        stroke-width="0"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M12 3a1 1 0 0 1 .993 .883l.007 .117v9.171a3.001 3.001 0 0 1 0 5.658v1.171a1 1 0 0 1 -1.993 .117l-.007 -.117v-1.17a3.002 3.002 0 0 1 -1.995 -2.654l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-9.17a1 1 0 0 1 1 -1z"
-                        stroke-width="0"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M18 3a1 1 0 0 1 .993 .883l.007 .117v.171a3.001 3.001 0 0 1 0 5.658v10.171a1 1 0 0 1 -1.993 .117l-.007 -.117v-10.17a3.002 3.002 0 0 1 -1.995 -2.654l-.005 -.176l.005 -.176a3.002 3.002 0 0 1 1.995 -2.654v-.17a1 1 0 0 1 1 -1z"
-                        stroke-width="0"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </span>
-                </a>
+  const pathname = usePathname();
+  const containerRef = useRef(null);
+  const { height } = useDimensions(containerRef);
+  const [isOpen, toggleOpen] = useCycle(false, true);
 
-                <a
-                  href="#"
-                  className={clsx(
-                    "flex items-center justify-start gap-4 py-2 hover:bg-secondary/50"
-                  )}
+  const session = useSession();
+  const user = session.data?.user;
+  if (!user) return;
+  return (
+    <motion.nav
+      initial={false}
+      animate={isOpen ? "open" : "closed"}
+      custom={height}
+      className={`fixed inset-0 z-50 w-full md:hidden ${
+        isOpen ? "" : "pointer-events-none"
+      }`}
+      ref={containerRef}
+    >
+      <motion.div
+        className="absolute inset-0 w-full bg-background"
+        variants={sidebar}
+      />
+
+      <motion.ul
+        variants={variants}
+        className="absolute flex h-full w-full flex-col justify-between gap-3 px-10 py-16"
+      >
+        <motion.div variants={sidebar}>
+          <Link href="/" onClick={() => toggleOpen()}>
+            Carnet Potager 🥕
+          </Link>
+        </motion.div>
+        {SIDEBARITEMS.map((item, index) => {
+          const isLastItem = index === SIDEBARITEMS.length - 1; // Check if it's the last item
+
+          return (
+            <div key={index}>
+              <MenuItem>
+                <Link
+                  href={item.href}
+                  onClick={() => toggleOpen()}
+                  className={`flex w-full text-2xl ${
+                    item.href === pathname ? "font-bold" : ""
+                  }`}
                 >
-                  <span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="icon icon-tabler icon-tabler-settings stroke-foreground/60"
-                            width="28"
-                            height="28"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
-                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                          </svg>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Paramètres</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </span>
-                </a>
-              </nav>
+                  {item.name}
+                </Link>
+              </MenuItem>
+
+              {!isLastItem && (
+                <MenuItem className="my-3 h-px w-full bg-secondary/60" />
+              )}
             </div>
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+          );
+        })}
+        <motion.div variants={sidebar} className="flex justify-between gap-1">
+          <ThemeToggle />
+          <LoggedInButton user={user} />
+        </motion.div>
+      </motion.ul>
+
+      <MenuToggle toggle={toggleOpen} />
+    </motion.nav>
   );
+};
+
+const MenuToggle = ({ toggle }: { toggle: any }) => (
+  <button
+    onClick={toggle}
+    className="pointer-events-auto absolute right-4 top-[14px] z-30"
+  >
+    <svg width="23" height="23" viewBox="0 0 23 23">
+      <Path
+        variants={{
+          closed: { d: "M 2 2.5 L 20 2.5" },
+          open: { d: "M 3 16.5 L 17 2.5" },
+        }}
+      />
+      <Path
+        d="M 2 9.423 L 20 9.423"
+        variants={{
+          closed: { opacity: 1 },
+          open: { opacity: 0 },
+        }}
+        transition={{ duration: 0.1 }}
+      />
+      <Path
+        variants={{
+          closed: { d: "M 2 16.346 L 20 16.346" },
+          open: { d: "M 3 2.5 L 17 16.346" },
+        }}
+      />
+    </svg>
+  </button>
+);
+
+const Path = (props: any) => (
+  <motion.path
+    fill="transparent"
+    strokeWidth="2"
+    stroke="hsl(0, 0%, 18%)"
+    strokeLinecap="round"
+    {...props}
+  />
+);
+
+const MenuItem = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) => {
+  return (
+    <motion.li variants={MenuItemVariants} className={className}>
+      {children}
+    </motion.li>
+  );
+};
+
+const MenuItemVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+      duration: 0.02,
+    },
+  },
+};
+
+const variants = {
+  open: {
+    transition: { staggerChildren: 0.02, delayChildren: 0.15 },
+  },
+  closed: {
+    transition: { staggerChildren: 0.01, staggerDirection: -1 },
+  },
+};
+
+const useDimensions = (ref: any) => {
+  const dimensions = useRef({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (ref.current) {
+      dimensions.current.width = ref.current.offsetWidth;
+      dimensions.current.height = ref.current.offsetHeight;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]);
+
+  return dimensions.current;
 };

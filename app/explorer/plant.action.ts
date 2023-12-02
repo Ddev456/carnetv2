@@ -25,7 +25,7 @@ export const handleEventState = authenticatedAction(
     //   return { warning: true };
     // }
 
-    const countEventsLimit = await prisma.userNotifications.count({
+    const countEventsLimit = await prisma.notification.count({
       where: {
         userId: userId,
         removed: true,
@@ -34,7 +34,7 @@ export const handleEventState = authenticatedAction(
 
     if (countEventsLimit >= 10) return { error: true };
 
-    const isRemoved = await prisma.userNotifications.findFirst({
+    const isRemoved = await prisma.notification.findFirst({
       where: {
         plantId: plantId,
         userId: userId,
@@ -44,7 +44,7 @@ export const handleEventState = authenticatedAction(
       },
     });
 
-    const countEvent = await prisma.userNotifications.count({
+    const countEvent = await prisma.notification.count({
       where: {
         plantId: plantId,
         userId: userId,
@@ -54,7 +54,7 @@ export const handleEventState = authenticatedAction(
     const isPotager = countEvent !== 0;
 
     if (isRemoved && isPotager) {
-      const eventId = await prisma.userNotifications.findFirst({
+      const eventId = await prisma.notification.findFirst({
         where: {
           plantId: plantId,
           userId: userId,
@@ -65,7 +65,7 @@ export const handleEventState = authenticatedAction(
       });
 
       if (eventId) {
-        await prisma.userNotifications.update({
+        await prisma.notification.update({
           where: {
             id: eventId.id,
           },
@@ -77,7 +77,7 @@ export const handleEventState = authenticatedAction(
         });
       }
     } else {
-      await prisma.userNotifications.create({
+      await prisma.notification.create({
         data: {
           userId: userId,
           plantId: plantId,
@@ -110,7 +110,7 @@ export const handleRemovePotager = authenticatedAction(
     //   return { warning: true };
     // }
 
-    const countEvent = await prisma.userNotifications.count({
+    const countEvent = await prisma.notification.count({
       where: {
         plantId: plantId,
         userId: userId,
@@ -121,7 +121,7 @@ export const handleRemovePotager = authenticatedAction(
     const isExist = countEvent !== 0;
 
     if (isExist) {
-      const eventId = await prisma.userNotifications.findFirst({
+      const eventId = await prisma.notification.findFirst({
         where: {
           plantId: plantId,
           userId: userId,
@@ -132,7 +132,7 @@ export const handleRemovePotager = authenticatedAction(
       });
 
       if (eventId) {
-        await prisma.userNotifications.update({
+        await prisma.notification.update({
           where: {
             userId: userId,
             id: eventId.id,
@@ -163,7 +163,7 @@ export const limitPotager = authenticatedAction(
       throw new Error("Unauthorized");
     }
 
-    const countEventsLimit = await prisma.userNotifications.count({
+    const countEventsLimit = await prisma.notification.count({
       where: {
         userId: userId,
       },

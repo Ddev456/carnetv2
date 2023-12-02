@@ -1,23 +1,24 @@
 "use client";
 
 import React from "react";
-import { PlantsComboBox } from "./PlantsComboBox";
+import { PlantsComboBox } from "../ui/PlantsComboBox";
 import { CalendarView } from "./CalendarView";
-import { PlantInfos, plantsDataTable } from "../dashboard/plant.query";
 import { CategoryView } from "./CategoryView";
 import { SheetView } from "./SheetView";
-import { useSidebarStore } from "@/components/layout/Sidebar.store";
-import clsx from "clsx";
+import { type Plants, type Plant } from "@/db/query/plant.query";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { getUserNotifications } from "@/db/query/user.query.js";
 
 type ExplorerData = {
-  plants: plantsDataTable;
-  // categories: CategoriesCard[];
+  plants: Plant[];
   isConnected: Boolean;
   userPotager?: string[];
 };
 
 type ExplorerProps = {
   data: ExplorerData;
+  query: string;
 };
 
 type calendarType =
@@ -26,14 +27,6 @@ type calendarType =
   | "plantation"
   | "flowering"
   | "harvest";
-
-// type calendarTypesT = {
-//   type: calendarType;
-//   data: number[];
-//   bgColor: string;
-//   color: string;
-//   darkBgColor: string;
-// };
 
 export type categoryId =
   | "fruits"
@@ -48,18 +41,16 @@ export type categoriesT = {
   id: categoryId;
   identifier: string;
   name: string;
-  plants: plantsDataTable;
+  plants: Plants;
   emoji: string;
 };
 
-export const Explorer = ({ data }: ExplorerProps) => {
-  const { state } = useSidebarStore();
-
+export const Explorer = ({ data, query }: ExplorerProps) => {
   const categories = [
     {
       id: "*",
       identifier: "TOUT",
-      name: "Toutes les plantes",
+      name: "Tout",
       plants: data.plants,
       emoji: "🌱",
     },
@@ -110,9 +101,7 @@ export const Explorer = ({ data }: ExplorerProps) => {
       emoji: "📌",
     },
   ] as categoriesT[];
-  const [selected, onSelect] = React.useState<PlantInfos>(
-    categories[0].plants[0]
-  );
+  const [selected, onSelect] = React.useState<Plant>(categories[0].plants[0]);
   const [selectedCategory, onSelectCategory] = React.useState<categoryId>("*");
   const [isSelected, toggleListOfPlants] = React.useState(false);
 
@@ -120,17 +109,12 @@ export const Explorer = ({ data }: ExplorerProps) => {
     toggleListOfPlants(!isSelected);
   };
 
-  const handleSelect = (plant: PlantInfos) => {
+  const handleSelect = (plant: Plant) => {
     onSelect(plant);
   };
 
   return (
-    <div
-      className={clsx("flex w-full flex-col gap-4 pt-[4rem]", {
-        "md:pl-[4rem]": state,
-        "md:pl-[12rem]": !state,
-      })}
-    >
+    <div className="flex h-full flex-col justify-between gap-2 px-4 pt-12 md:max-w-[80vw] md:p-4">
       <PlantsComboBox
         categories={categories}
         selectedCategory={selectedCategory}
