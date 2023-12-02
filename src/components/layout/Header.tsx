@@ -10,7 +10,7 @@ export const Header = async () => {
   const session = await getAuthSession();
   if (session?.user) return;
   return (
-    <header className="fixed top-0 z-40 w-full border-b bg-background">
+    <header className="fixed top-0 z-40 mb-[2rem] w-full border-b bg-background">
       <div className="mx-2 flex h-16 items-center justify-between space-x-4 sm:mx-4">
         <div className="flex">
           {/* {session?.user && (
@@ -19,13 +19,16 @@ export const Header = async () => {
             </>
           )} */}
           <Typography className="flex" variant="h3" as={Link} href="/">
-            <span className="hidden md:block">{SiteConfig.title}</span> 🥕
+            {/* <span className="hidden md:block"> */}
+            {SiteConfig.title}
+            {/* </span>  */}
+            🥕
           </Typography>
         </div>
 
-        <div className="flex items-baseline justify-around gap-2">
+        {/* <div className="flex items-baseline justify-around gap-2">
           <SearchBar placeholder="Rechercher une plante ..." />
-        </div>
+        </div> */}
 
         <nav className="flex items-center justify-end space-x-1">
           {/* {session?.user && <NotificationsButton />} */}

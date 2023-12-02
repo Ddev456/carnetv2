@@ -11,7 +11,7 @@ import "./globals.css";
 import { getAuthSession } from "@/lib/auth";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { FooterNav } from "@/components/layout/FooterNav";
-import { Sidebar } from "@/components/Sidebar";
+import { Sidebar } from "@/components/layout/Sidebar";
 
 const poppins = Poppins({
   subsets: ["latin"],
