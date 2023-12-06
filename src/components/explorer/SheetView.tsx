@@ -73,7 +73,7 @@ export const SheetView = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="bg-accent/30 p-2 hover:bg-accent/40">
+                    <Badge className="text-capitalize bg-accent/30 p-2 hover:bg-accent/40">
                       {/* <Sprout size={24} /> */}
                       ⏱️ {plant?.type}
                     </Badge>

@@ -29,16 +29,5 @@ export default async function ExplorerPage({
   const plantQuery = plants.data.filter((plant: Plant) => {
     return plant.name.toLowerCase().includes(query.toLowerCase());
   });
-  return (
-    <Suspense>
-      <Explorer
-        data={{
-          plants: query ? plantQuery : plants.data,
-          isConnected: session?.user ? true : false,
-          userPotager: userPotagerId,
-        }}
-        query={query}
-      />
-    </Suspense>
-  );
+  return <></>;
 }

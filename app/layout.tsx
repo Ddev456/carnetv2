@@ -12,6 +12,7 @@ import { getAuthSession } from "@/lib/auth";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { FooterNav } from "@/components/layout/FooterNav";
 import { Sidebar } from "@/components/layout/Sidebar";
+import clsx from "clsx";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -52,7 +53,11 @@ export default async function RootLayout({
                   <Sidebar />
                 </>
               )}
-              <main className="w-full">{children}</main>
+              <main
+                className={clsx(session?.user ? "p-0" : "pt-[8rem]", "w-full")}
+              >
+                {children}
+              </main>
               {/* <FooterNav /> */}
             </section>
           </Providers>

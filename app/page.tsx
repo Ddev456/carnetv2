@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <div className="m-auto my-8 flex max-w-6xl flex-col gap-4 px-6 lg:my-16 lg:flex-row xl:my-24 xl:gap-8">
+      <div className="my-8 flex max-w-6xl flex-col gap-4 px-6 md:m-auto lg:my-16 lg:flex-row xl:my-24 xl:gap-8">
         <div className="flex flex-1 flex-col gap-4 lg:gap-6">
           <h1 className="mb-4 text-center text-2xl font-extrabold leading-none tracking-tight text-foreground/80 md:text-6xl">
             Tout votre &#160;

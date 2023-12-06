@@ -9,6 +9,7 @@ import { type Plants, type Plant } from "@/db/query/plant.query";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { getUserNotifications } from "@/db/query/user.query.js";
+import clsx from "clsx";
 
 type ExplorerData = {
   plants: Plant[];
@@ -21,12 +22,12 @@ type ExplorerProps = {
   query: string;
 };
 
-type calendarType =
-  | "nursery"
-  | "seedling"
-  | "plantation"
-  | "flowering"
-  | "harvest";
+// type calendarType =
+//   | "nursery"
+//   | "seedling"
+//   | "plantation"
+//   | "flowering"
+//   | "harvest";
 
 export type categoryId =
   | "fruits"
@@ -114,7 +115,14 @@ export const Explorer = ({ data, query }: ExplorerProps) => {
   };
 
   return (
-    <div className="flex h-full flex-col justify-between gap-2 px-4 pt-12 md:max-w-[80vw] md:p-4">
+    <div
+      className={clsx(
+        "flex h-full flex-col justify-between gap-2 px-4 pt-12 md:max-w-[80vw] md:p-4",
+        {
+          "md:pt-[6rem]": !data.isConnected,
+        }
+      )}
+    >
       <PlantsComboBox
         categories={categories}
         selectedCategory={selectedCategory}
@@ -136,7 +144,7 @@ export const Explorer = ({ data, query }: ExplorerProps) => {
           isReadOnly={!data.isConnected}
           userPotager={data.userPotager}
         />
-        <CalendarView plant={selected} />
+        <CalendarView plant={selected} plants={data.plants} />
       </div>
     </div>
   );

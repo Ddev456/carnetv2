@@ -92,7 +92,7 @@ export const CategoryView = ({
           ))}
         </div>
       </div>
-      <Card className="w-full flex-1 bg-secondary/30">
+      <Card className="w-full bg-secondary/30">
         <div className="flex gap-2">
           <Button
             variant={"ghost"}
