@@ -34,7 +34,6 @@ export const getPlants = async () => {
       eventFlowering: true,
       eventHarvest: true,
       createdAt: true,
-      categoryId: true,
     },
     orderBy: {
       name: "asc",

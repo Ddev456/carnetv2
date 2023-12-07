@@ -78,8 +78,8 @@ enum CategoryType {
 
 model Plant {
     id      String     @id @default(cuid())
-    name    String
-    rank    String // A string that represents the order of the plant
+    name    String     @unique
+    // rank    String // A string that represents the order of the plant
     content String // markdown
     state   PlantState @default(BROUILLON)
 
@@ -113,9 +113,9 @@ model Plant {
     eventFlowering  Int?
     eventHarvest    Int?
 
-    createdAt  DateTime @default(now())
-    categoryId String
-    tasks      Task[]
+    createdAt DateTime @default(now())
+    // categoryId String
+    tasks     Task[]
 }
 
 enum PlantState {

@@ -1,7 +1,6 @@
 export type PlantInfos = {
   id: string;
   name: string;
-  categoryId: string;
   water: number;
   exposition: number;
   nursery: number[];

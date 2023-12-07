@@ -131,7 +131,7 @@ export const CategoryView = ({
                     selected === plant
                       ? "border-primary/40 bg-primary/50 hover:bg-primary/30"
                       : "bg-secondary/40",
-                    "min-w-[120px] rounded border border-borders bg-primary/10 px-4 py-2 align-middle text-sm transition-colors hover:cursor-pointer hover:bg-primary/20"
+                    "min-w-[120px] truncate rounded border border-borders bg-primary/10 px-4 py-2 align-middle text-sm transition-colors hover:cursor-pointer hover:bg-primary/20"
                   )}
                 >
                   {plant.name}
