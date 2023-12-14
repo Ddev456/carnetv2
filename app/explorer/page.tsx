@@ -24,7 +24,12 @@ export default async function ExplorerPage({
   const userPotager = notifications?.data?.filter((plant) => {
     !plant.removed;
   });
-  const userPotagerId = userPotager?.map((plant) => plant.plantId);
+  // const userPotagerId = userPotager?.map((plant) => plant.plantId);
+
+  const userPotagerId = userPotager
+    ?.map((plant) => plant.plantId)
+    .filter((id) => id !== null) as string[];
+
   const query = searchParams?.query || "";
   const plantQuery = plants.data.filter((plant: Plant) => {
     return plant.name.toLowerCase().includes(query.toLowerCase());

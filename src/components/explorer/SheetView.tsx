@@ -53,7 +53,14 @@ export const SheetView = ({
         <div className="flex flex-row flex-wrap items-start gap-3 md:flex-col">
           <div className="flex w-full justify-between">
             <h4 className="">
-              Plante sélectionnée :{" "}
+              Plante sélectionnée :
+              <Image
+                className="rounded-xl"
+                alt="plant thumbnail"
+                src={plant.thumbnail}
+                width={120}
+                height={120}
+              />
               <span className="font-bold uppercase text-primary">
                 {plant.name}
               </span>

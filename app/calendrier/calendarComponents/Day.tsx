@@ -55,38 +55,38 @@ export function Day({
   return (
     <div
       className={clsx(
-        "md:w-full md:max-h-[8rem] md:min-h-[8rem] h-[3rem] relative p-2 md:p-4 border border-gray-200 text-gray-500 group cursor-pointer flex flex-col gap-1"
+        "group relative flex h-[3rem] cursor-pointer flex-col gap-1 border border-gray-200 p-2 text-gray-500 md:max-h-[8rem] md:min-h-[8rem] md:w-full md:p-4"
       )}
       onClick={() => handleDayClick(day)}
     >
       <div
         className={clsx(
-          "group-hover:bg-blue-200 absolute top-1 left-1 md:top-0 md:left-auto md:right-0 md:py-2 md:px-2 py-2 px-4 rounded-full h-[1.3rem] w-[1.3rem] flex items-center",
+          "absolute left-1 top-1 flex h-[1.3rem] w-[1.3rem] items-center rounded-full px-4 py-2 group-hover:bg-blue-200 md:left-auto md:right-0 md:top-0 md:p-2",
           day.getDate() === currentDay && day.getMonth() === currentMonth
-            ? "bg-blue-500 text-white font-semibold"
+            ? "bg-blue-500 font-semibold text-white"
             : ""
         )}
       >
         {day.getDate()}
       </div>
       {filteredEvents.length > 0 && (
-        <div className="mt-4 ml-3 bottom-0 h-2 w-2 rounded-full bg-orange-500 md:hidden"></div>
+        <div className="bottom-0 ml-3 mt-4 h-2 w-2 rounded-full bg-orange-500 md:hidden"></div>
       )}
       {filteredEvents.slice(0, 2).map((event, eventIndex) => (
-        <div key={eventIndex} className={`md:block hidden ${event.colorCode}`}>
+        <div key={eventIndex} className={`hidden md:block ${event.colorCode}`}>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <p className="truncate max-w-[6rem] overflow-hidden">
+                <p className="max-w-[6rem] overflow-hidden truncate">
                   {event.title}
                 </p>
               </TooltipTrigger>
               <TooltipContent className="p-0">
-                <div className="flex flex-col min-h-[18rem] min-w-[28rem]">
+                <div className="flex min-h-[18rem] min-w-[28rem] flex-col">
                   <div
                     className={clsx(
                       event.colorCode,
-                      "w-full text-foreground font-bold py-3"
+                      "w-full py-3 font-bold text-foreground"
                     )}
                     key={eventIndex}
                   >
@@ -133,7 +133,7 @@ export function Day({
             </svg>
           </AlertDialogTrigger>
           <AlertDialogContent className="">
-            <AlertDialogCancel className="border-0 absolute top-0 right-0">
+            <AlertDialogCancel className="absolute right-0 top-0 border-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon icon-tabler icon-tabler-x stroke-foreground/80"

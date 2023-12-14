@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { handleEventState } from "../../../app/explorer/plant.action";
 import { toast } from "sonner";
+import { Plant } from "../../db/query/plant.query";
 
 type AddButtonProps = {
-  plant: PlantInfos;
+  plant: Plant;
   buttonState: boolean;
 };
 

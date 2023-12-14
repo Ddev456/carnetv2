@@ -1,54 +1,22 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import clsx from "clsx";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { CheckSquare, Square } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { motion } from "framer-motion";
-import { filterEvents, getEventDataForDay } from "./eventHelper";
 import { CalendarMobileMenu } from "./CalendarMobileMenu";
 import { Day } from "./Day";
-
-type Plant = {
-  id: string;
-  name: string;
-  emoji: string;
-  type: string;
-  nursery: number[];
-  seedling: number[];
-  plantation: number[];
-  flowering: number[];
-  harvest: number[];
-};
+import { getEventDataForDay } from "./eventHelper";
+import { Input } from "../../../src/components/ui/input";
+import { type Plant } from "@/db/query/plant.query";
+import { DynamicData } from "./dynamicGen";
 
 type DataPlants = {
   data: Plant[];
@@ -59,7 +27,7 @@ type ClimateData = {
 };
 
 type CalendarResponsiveProps = {
-  climateData: ClimateData;
+  dynamicData: DynamicData[];
 };
 
 type EventCalendar = {
@@ -102,14 +70,28 @@ const BadgeComponent = ({
   );
 };
 
+type StageType = "SOWING" | "COVERSOWING" | "TRANSPLANTING" | "PLANTING";
+// | "FLOWERING"
+// | "HARVESTING";
+
+const stageColorMap: Record<StageType, string> = {
+  SOWING: "bg-[#D3E7A6]",
+  COVERSOWING: "bg-[#BEE7F5]",
+  TRANSPLANTING: "bg-[#EBDACA]",
+  PLANTING: "bg-[#FFD19A]",
+  // FLOWERING: "bg-[#FFD19A]",
+  // HARVESTING: "bg-[#E1D9FF]",
+};
+
 export const CalendarResponsive = ({
-  climateData,
+  dynamicData,
 }: CalendarResponsiveProps) => {
+  console.log(dynamicData);
   // Choisissez le climat que vous voulez utiliser
-  const [climate, setClimate] = useState<string>("Océanique");
+  // const [climate, setClimate] = useState<string>("Océanique");
 
   // Obtenez les événements de calendrier pour ce climat
-  const eventsOnClimate = climateData[climate];
+  // const eventsOnClimate = climateData[climate];
 
   const currentDate = new Date(Date.now());
 
@@ -146,7 +128,7 @@ export const CalendarResponsive = ({
     emptyCells.push(
       <div
         key={`empty-${i}`}
-        className="border border-borders calendar-cell bg-secondary/20"
+        className="calendar-cell border border-borders bg-secondary/20"
       ></div>
     );
   }
@@ -155,12 +137,36 @@ export const CalendarResponsive = ({
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth();
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // pour comparer uniquement la date, pas l'heure
+  const allEvents: EventCalendar[] = dynamicData.flatMap((plantData) => ({
+    eventDate: plantData.date,
+    title: plantData.plantName,
+    description: (() => {
+      switch (plantData.stage) {
+        case "SOWING":
+          return `Date optimale pour le semis en pleine terre de ${plantData.plantName}`;
+        case "COVERSOWING":
+          return `Date optimale pour le semis sous abri de ${plantData.plantName}`;
+        case "TRANSPLANTING":
+          return `Date optimale pour le repiquage de ${plantData.plantName}`;
+        case "PLANTING":
+          return `Date optimale pour la plantation de ${plantData.plantName}`;
+        default:
+          return `Date optimale pour ${plantData.stage} de ${plantData.plantName}`;
+      }
+    })(),
+    colorCode: stageColorMap[plantData.stage as StageType],
+    type: plantData.stage,
+  }));
 
-  const currentDayEvents = eventsOnClimate.filter((event) => {
+  // Obtenir la date actuelle et réinitialiser l'heure à minuit
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Filtrer les événements pour ne garder que ceux qui ont lieu le jour actuel
+
+  const currentDayEvents = allEvents.filter((event) => {
     const eventDate = new Date(event.eventDate);
-    eventDate.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0); // réinitialiser les heures, minutes, secondes et millisecondes à 0
     return eventDate.getTime() === today.getTime();
   });
 
@@ -168,7 +174,7 @@ export const CalendarResponsive = ({
     useState<EventCalendar[]>(currentDayEvents);
 
   const [recurringEvents, setRecurringEvents] =
-    useState<EventCalendar[]>(eventsOnClimate);
+    useState<EventCalendar[]>(allEvents);
 
   const handleDayClick = (day: Date) => {
     setSelectedDay(day);
@@ -207,6 +213,7 @@ export const CalendarResponsive = ({
 
   const [semisSousAbri, setSemisSousAbri] = useState(true);
   const [semisEnPleineTerre, setSemisEnPleineTerre] = useState(true);
+  const [transplantation, setTransplantation] = useState(true);
   const [plantation, setPlantation] = useState(true);
   const [floraison, setFloraison] = useState(true);
   const [recolte, setRecolte] = useState(true);
@@ -286,51 +293,24 @@ export const CalendarResponsive = ({
     });
   };
 
-  // weekDays.forEach((day) => {
-  // const filteredEvents = recurringEvents.filter(
-  //   (event) =>
-  //     event.eventDate.getDate() === day.getDate() &&
-  //     event.eventDate.getMonth() === day.getMonth() &&
-  //     event.eventDate.getFullYear() === day.getFullYear()
-  // );
-
-  // const groupedEvents = filteredEvents.reduce(
-  //   (groups: Record<string, EventCalendar[]>, event) => {
-  //     const key = event.type;
-  //     if (!groups[key]) {
-  //       groups[key] = [];
-  //     }
-  //     groups[key].push(event);
-  //     return groups;
-  //   },
-  //   {}
-  // );
-  // const eventGroups = Object.entries(groupedEvents).map(([type, events]) => ({
-  //   type,
-  //   events,
-  // }));
-  // const totalEvents = eventGroups.reduce(
-  //   (total, group) => total + group.events.length,
-  //   0
-  // );
-  // const allEvents = eventGroups.flatMap((group) => group.events);
   const { groupedEvents, flatEvents, totalEvents } = getEventDataForDay(
     selectedDay,
     recurringEvents
   );
   const filters = {
-    "Semis sous abri": semisSousAbri,
-    "Semis en pleine terre": semisEnPleineTerre,
-    Plantation: plantation,
-    Floraison: floraison,
-    Récolte: recolte,
+    SOWING: semisEnPleineTerre,
+    COVERSOWING: semisSousAbri,
+    TRANSPLANTING: transplantation,
+    PLANTING: plantation,
+    FLOWERING: floraison,
+    HARVESTING: recolte,
   };
   return (
     <>
-      <div className="w-full md:w-[80%] h-full flex flex-col items-center justify-center py-12">
-        <div className="h-full md:min-h-[800px] bg-white rounded-lg shadow overflow-hidden mx-auto w-full">
-          <div className="flex justify-between items-center py-2 px-6">
-            <div className="flex-col gap-2 hidden md:flex">
+      <div className="flex h-full w-full flex-col items-center justify-center py-12 md:w-[80%]">
+        <div className="mx-auto h-full w-full overflow-hidden rounded-lg bg-white shadow md:min-h-[800px]">
+          <div className="flex items-center justify-between px-6 py-2">
+            <div className="hidden flex-col gap-2 md:flex">
               <Input
                 type="text"
                 value={searchValue}
@@ -352,11 +332,17 @@ export const CalendarResponsive = ({
                 />
                 <BadgeComponent
                   color="#EBDACA"
+                  checked={transplantation}
+                  onClick={() => handleCheckboxChange(setPlantation)}
+                  label="Repiquage"
+                />
+                <BadgeComponent
+                  color="#FFD19A"
                   checked={plantation}
                   onClick={() => handleCheckboxChange(setPlantation)}
                   label="Plantation"
                 />
-                <BadgeComponent
+                {/* <BadgeComponent
                   color="#FFD19A"
                   checked={floraison}
                   onClick={() => handleCheckboxChange(setFloraison)}
@@ -367,7 +353,7 @@ export const CalendarResponsive = ({
                   checked={recolte}
                   onClick={() => handleCheckboxChange(setRecolte)}
                   label="Récolte"
-                />
+                /> */}
               </div>
             </div>
             <Sheet>
@@ -427,11 +413,17 @@ export const CalendarResponsive = ({
                         />
                         <BadgeComponent
                           color="#EBDACA"
-                          checked={plantation}
+                          checked={transplantation}
                           onClick={() => handleCheckboxChange(setPlantation)}
-                          label="Semis en pleine terre"
+                          label="Repiquage"
                         />
                         <BadgeComponent
+                          color="#FFD19A"
+                          checked={plantation}
+                          onClick={() => handleCheckboxChange(setPlantation)}
+                          label="Plantation"
+                        />
+                        {/* <BadgeComponent
                           color="#FFD19A"
                           checked={floraison}
                           onClick={() => handleCheckboxChange(setFloraison)}
@@ -442,7 +434,7 @@ export const CalendarResponsive = ({
                           checked={recolte}
                           onClick={() => handleCheckboxChange(setRecolte)}
                           label="Semis en pleine terre"
-                        />
+                        /> */}
                       </div>
                     </div>
                   </SheetDescription>
@@ -511,11 +503,11 @@ export const CalendarResponsive = ({
               </svg>
             </Button>
           </div>
-          <div className="grid grid-cols-7 text-center text-sm px-2 md:px-0">
+          <div className="grid grid-cols-7 px-2 text-center text-sm md:px-0">
             {weekDays.map((day, index) => (
               <div
                 key={index}
-                className="py-2 border-b border-gray-200 font-semibold text-gray-700"
+                className="border-b border-gray-200 py-2 font-semibold text-gray-700"
               >
                 {day}
               </div>
@@ -524,6 +516,7 @@ export const CalendarResponsive = ({
             {dates.map((day, index) => {
               const { groupedEvents, flatEvents, totalEvents } =
                 getEventDataForDay(day, recurringEvents);
+              console.log("groupedEvents ==>", recurringEvents);
 
               return (
                 <Day

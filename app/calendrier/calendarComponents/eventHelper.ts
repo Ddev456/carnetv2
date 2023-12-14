@@ -16,6 +16,12 @@ export function getEventDataForDay(
   day: Date,
   events: EventCalendar[]
 ): EventData {
+  // const filteredEvents = events.filter((event) => {
+  //   const eventDate = event.eventDate.toISOString().split("T")[0];
+  //   const dayDate = day.toISOString().split("T")[0];
+  //   if (eventDate === dayDate) return eventDate === dayDate;
+  // });
+
   const filteredEvents = events.filter(
     (event) =>
       event.eventDate.getDate() === day.getDate() &&
@@ -27,6 +33,7 @@ export function getEventDataForDay(
     (groups: Record<string, EventCalendar[]>, event) => {
       // Formattez la date de l'événement en tant que clé
       const eventDate = event.eventDate;
+
       const key = `${eventDate.getFullYear()}-${
         eventDate.getMonth() + 1
       }-${eventDate.getDate()}`;
@@ -39,7 +46,6 @@ export function getEventDataForDay(
     },
     {}
   );
-
   const totalEvents = filteredEvents.length;
 
   const flatEvents = Object.values(groupedEvents).flat();

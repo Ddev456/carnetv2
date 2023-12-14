@@ -76,72 +76,74 @@ enum CategoryType {
     AUTRES
 }
 
-model Plant {
-    id      String     @id @default(cuid())
-    name    String     @unique
-    // rank    String // A string that represents the order of the plant
-    content String // markdown
-    state   PlantState @default(BROUILLON)
+enum PeriodType {
+    COVERSOWING
+    SOWING
+    TRANSPLANTING
+    PLANTING
+    FLOWERING
+    HARVESTING
+}
 
-    thumbnail    String
-    type         String
-    seedling     Int[]
-    nursery      Int[]
-    plantation   Int[]
-    flowering    Int[]
-    harvest      Int[]
-    exposition   Int
-    water        Int
-    spaceBetween Int
-    spaceOnRow   Int
-    seedMinTemp  Int
-    seedMaxTemp  Int
-    seedDepth    Int
-    emergence    Int
-    optimalTemp  Int
-    nitrogenN    Int
-    phosphorusP  Int
-    potassiumK   Int
-    level        Int
-    efficiency   Int
-    conservation Int
-    isHardiness  Boolean
+model CulturePeriod {
+    id         String     @id @default(cuid())
+    startWeek  Int
+    endWeek    Int
+    periodType PeriodType
+    plantId    String
+    plant      Plant      @relation(fields: [plantId], references: [id])
+}
+
+model Plant {
+    id               String          @id @default(cuid())
+    name             String          @unique
+    description      String
+    advice           String[]
+    thumbnail        String
+    type             String
+    vegetationZero   Int
+    optimalTemp      Int
+    growingTime      Int
+    readyToPlantTime Int
+    exposition       Int
+    water            Int
+    spaceBetween     Int
+    spaceOnRow       Int
+    seedMinTemp      Int
+    seedMaxTemp      Int
+    seedDepth        Int
+    emergence        Int
+    nitrogenN        Int
+    phosphorusP      Int
+    potassiumK       Int
+    level            Int
+    efficiency       Int
+    conservation     Int
+    isHardiness      Boolean
+    culturePeriods   CulturePeriod[]
 
     categoryType CategoryType @default(AUTRES)
 
-    eventPlantation Int?
-    eventFlowering  Int?
-    eventHarvest    Int?
-
     createdAt DateTime @default(now())
-    // categoryId String
-    tasks     Task[]
 }
 
-enum PlantState {
-    BROUILLON
-    PUBLIE
-}
-
-enum TypeEvent {
-    nursery
-    seedling
-    plantation
+enum NotificationType {
+    POTAGER
+    JOURNAL
 }
 
 model Notification {
-    id        String    @id @default(cuid())
+    id        String           @id @default(cuid())
     userId    String
-    plantId   String
+    plantId   String?
     plantName String
-    startDate DateTime  @default(now())
-    typeEvent TypeEvent @default(nursery)
-
-    removed Boolean @default(false)
-
-    updatedAt DateTime @default(now())
-
-    user User @relation(fields: [userId], references: [id])
+    startDate DateTime         @default(now())
+    type      NotificationType
+    read      Boolean          @default(false)
+    message   String
+    removed   Boolean          @default(false)
+    updatedAt DateTime         @default(now())
+    user      User             @relation(fields: [userId], references: [id])
 }
 
 enum TaskCategory {
@@ -169,6 +171,5 @@ model Task {
 
     updateAt DateTime @default(now())
 
-    user  User   @relation(fields: [userId], references: [id])
-    plant Plant? @relation(fields: [plantId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 }

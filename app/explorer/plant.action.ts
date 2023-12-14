@@ -70,7 +70,6 @@ export const handleEventState = authenticatedAction(
             id: eventId.id,
           },
           data: {
-            typeEvent: typeEvent || "nursery",
             startDate: startDate || new Date(Date.now()),
             removed: false,
           },
@@ -82,7 +81,8 @@ export const handleEventState = authenticatedAction(
           userId: userId,
           plantId: plantId,
           plantName: plantName,
-          typeEvent: typeEvent || "nursery",
+          type: "POTAGER",
+          message: "Vous avez ajouté une plante à votre potager",
           startDate: startDate || new Date(Date.now()),
         },
       });
