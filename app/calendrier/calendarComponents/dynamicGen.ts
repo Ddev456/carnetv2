@@ -85,7 +85,7 @@ function generateIdealDate(
   let dayOfWeek = startDate.getDay();
   let desiredDayOfWeek;
   let idealDate;
-  console.log(gardeningDayIndices.index);
+
   do {
     desiredDayOfWeek =
       userGardeningDays[gardeningDayIndices.index % userGardeningDays.length];

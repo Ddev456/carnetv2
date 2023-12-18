@@ -50,22 +50,22 @@ export const SheetView = ({
         />
       )}
       {plant && (
-        <div className="flex flex-row flex-wrap items-start gap-3 md:flex-col">
+        <div className="mt-[5rem] flex flex-row flex-wrap items-start gap-3 bg-[#0f8b8d]/30 md:justify-between">
+          <Image
+            className="mt-[-4rem]"
+            alt="plant thumbnail"
+            src={
+              plant.thumbnail
+                ? plant.thumbnail
+                : "https://carnetv2.s3.eu-west-3.amazonaws.com/public/icons/novegetable.png"
+            }
+            width={180}
+            height={180}
+          />
+          <span className="p-4 font-bold uppercase text-foreground">
+            Plante sélectionnée :{plant.name}
+          </span>
           <div className="flex w-full justify-between">
-            <h4 className="">
-              Plante sélectionnée :
-              <Image
-                className="rounded-xl"
-                alt="plant thumbnail"
-                src={plant.thumbnail}
-                width={120}
-                height={120}
-              />
-              <span className="font-bold uppercase text-primary">
-                {plant.name}
-              </span>
-            </h4>
-
             {isReadOnly ? (
               <MustLoggedAlert />
             ) : (

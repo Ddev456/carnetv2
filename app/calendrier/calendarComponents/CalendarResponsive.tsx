@@ -86,7 +86,6 @@ const stageColorMap: Record<StageType, string> = {
 export const CalendarResponsive = ({
   dynamicData,
 }: CalendarResponsiveProps) => {
-  console.log(dynamicData);
   // Choisissez le climat que vous voulez utiliser
   // const [climate, setClimate] = useState<string>("Océanique");
 
@@ -516,7 +515,6 @@ export const CalendarResponsive = ({
             {dates.map((day, index) => {
               const { groupedEvents, flatEvents, totalEvents } =
                 getEventDataForDay(day, recurringEvents);
-              console.log("groupedEvents ==>", recurringEvents);
 
               return (
                 <Day

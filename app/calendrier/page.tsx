@@ -35,7 +35,6 @@ export default async function Home() {
   let userTemps = temps.temps;
   const plants = await getPlants();
   const dynamicData = dynamic(plants.data);
-  console.log("dynamicData ==>", dynamicData);
 
   return <CalendarResponsive dynamicData={dynamicData} />;
 }

@@ -1,0 +1,31 @@
+@media print {
+    body * {
+      visibility: hidden;
+    }
+    #plan {
+        position: relative;
+        width: 100%;
+      }
+      
+      #plan:before {
+        content: "";
+        display: block;
+        padding-top: 62%; /* Remplacez 100% par le pourcentage de la hauteur par rapport à la largeur de votre plan */
+      }
+      
+      #plan > .content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    #plan, #plan *, #plan_legend {
+      visibility: visible;
+    }
+    #plan, #plan_legend {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }

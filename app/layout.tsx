@@ -53,9 +53,7 @@ export default async function RootLayout({
                   <Sidebar />
                 </>
               )}
-              <main
-                className={clsx(session?.user ? "p-0" : "pt-[8rem]", "w-full")}
-              >
+              <main className={clsx(session?.user ? "p-0" : "", "w-full")}>
                 {children}
               </main>
               {/* <FooterNav /> */}

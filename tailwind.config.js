@@ -21,6 +21,12 @@ module.exports = {
       body: "var(--body-font)",
     },
     extend: {
+      gridTemplateColumns: {
+        52: "repeat(56, minmax(0, 1fr))",
+      },
+      gridTemplateRows: {
+        32: "repeat(32, minmax(0, 1fr))",
+      },
       colors: {
         border: "hsl(var(--border))",
         borders: "hsla(var(--borders))",

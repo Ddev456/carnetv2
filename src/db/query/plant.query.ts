@@ -16,6 +16,7 @@ export const getPlants = async () => {
         },
       },
       thumbnail: true,
+      icon: true,
       description: true,
       advice: true,
       vegetationZero: true,
