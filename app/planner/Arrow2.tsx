@@ -5,7 +5,8 @@ export const Arrow2 = () => {
       height="142"
       viewBox="0 0 535 142"
       fill="none"
-      className="translate-x-[-10%] translate-y-[-150%]"
+      // className="translate-x-[-10%] translate-y-[-150%]"
+      className="absolute right-32 top-8"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

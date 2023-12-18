@@ -22,10 +22,10 @@ module.exports = {
     },
     extend: {
       gridTemplateColumns: {
-        52: "repeat(56, minmax(0, 1fr))",
+        76: "repeat(76, minmax(0, 1fr))",
       },
       gridTemplateRows: {
-        32: "repeat(32, minmax(0, 1fr))",
+        57: "repeat(57, minmax(0, 1fr))",
       },
       colors: {
         border: "hsl(var(--border))",

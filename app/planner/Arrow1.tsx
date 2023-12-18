@@ -1,7 +1,8 @@
 export const Arrow1 = () => {
   return (
     <svg
-      className="translate-y-[-210%] translate-x-[10%]"
+      className="absolute left-20 top-20"
+      // className="translate-y-[-210%] translate-x-[10%]"
       width="478"
       height="106"
       viewBox="0 0 478 106"

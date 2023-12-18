@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, memo, useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -283,8 +283,8 @@ export const Toolbar = ({
               {selectedPlant ? (
                 <>
                   <Image
-                    width={20}
-                    height={20}
+                    width={32}
+                    height={32}
                     src={
                       plants.find(
                         (plant) => plant.value === selectedPlant.value
@@ -295,7 +295,7 @@ export const Toolbar = ({
                         (plant) => plant.value === selectedPlant.value
                       )?.label || ""
                     }
-                    className="h-5 w-5"
+                    className="h-8 w-8"
                   />
                   {/* {
                     plants.find((plant) => plant.value === selectedPlant.value)
@@ -321,11 +321,11 @@ export const Toolbar = ({
                   }}
                 >
                   <Image
-                    width={20}
-                    height={20}
+                    width={32}
+                    height={32}
                     src={plants[2].image}
                     alt={plants[2].label}
-                    className="mr-2 rounded-full"
+                    className="mr-2 h-8 w-8 rounded-full"
                   />
                   <Check
                     className={cn(
@@ -341,7 +341,7 @@ export const Toolbar = ({
 
               <CommandInput placeholder="Plante à ajouter..." />
               <CommandEmpty>Aucune plante trouvée.</CommandEmpty>
-              <CommandGroup className="max-h-[10rem]">
+              <CommandGroup className="max-h-[17rem]">
                 {plants.map((plant) => (
                   <CommandItem
                     key={plant.value}
@@ -357,11 +357,11 @@ export const Toolbar = ({
                     }}
                   >
                     <Image
-                      width={20}
-                      height={20}
+                      width={32}
+                      height={32}
                       src={plant.image}
                       alt={plant.label}
-                      className="mr-2 rounded-full"
+                      className="mr-2 h-8 w-8 rounded-full"
                     />
                     <Check
                       className={cn(
@@ -528,6 +528,57 @@ type Cell = {
   plant: Plant | null;
 };
 
+type CellProps = {
+  rowIndex: number;
+  colIndex: number;
+  cell: Cell;
+  handleMouseDown: (rowIndex: number, colIndex: number) => void;
+  handleMouseOver: (rowIndex: number, colIndex: number) => void;
+  handleMouseUp: (rowIndex: number, colIndex: number) => void;
+  isGridMode: boolean;
+};
+
+const Cell = memo(function Cell({
+  rowIndex,
+  colIndex,
+  cell,
+  handleMouseDown,
+  handleMouseOver,
+  handleMouseUp,
+  isGridMode,
+}: CellProps) {
+  return (
+    <div
+      key={`${rowIndex}-${colIndex}`}
+      onMouseDown={() => {
+        handleMouseDown(rowIndex, colIndex);
+      }}
+      onMouseOver={() => {
+        handleMouseOver(rowIndex, colIndex);
+      }}
+      onMouseUp={() => {
+        handleMouseUp(rowIndex, colIndex);
+      }}
+      className={clsx(
+        "border-box select-none hover:bg-[#a2d5b0]",
+        { "border border-[#a2d5b0]/0": !isGridMode },
+        { "border border-white": isGridMode },
+        { "bg-amber-950/10": cell.plant }
+      )}
+    >
+      {cell.plant && (
+        <Image
+          className="pointer-events-none h-8 w-8"
+          width={32}
+          height={32}
+          src={cell.plant.image}
+          alt={cell.plant.label}
+        />
+      )}
+    </div>
+  );
+});
+
 type GridProps = {
   cells: Cell[][];
   updateCells: (newCells: Cell[][]) => void;
@@ -566,7 +617,10 @@ const Grid = ({
   grabMouseMove,
 }: GridProps) => {
   return (
-    <div id="plan" className="relative overflow-hidden bg-[#a2d5b0]/60">
+    <div
+      id="plan"
+      className="relative max-h-[85vh] overflow-hidden bg-[#a2d5b0]/60"
+    >
       <div
         ref={divRef}
         onMouseDown={(event) => isGrabMode && zoom > 1 && grabMouseDown(event)}
@@ -576,9 +630,23 @@ const Grid = ({
           cursor: isGrabMode && zoom > 1 ? "grab" : "default",
           transform: `scale(${zoom}) translate(${translation.x}px, ${translation.y}px)`,
         }}
-        className={`grid grid-cols-52 grid-rows-32`}
+        className={`grid h-[200vh] w-[200vh] grid-cols-76 grid-rows-57`}
       >
         {cells.map((row, rowIndex) =>
+          row.map((cell, colIndex) => (
+            <Cell
+              key={`${rowIndex}-${colIndex}`}
+              rowIndex={rowIndex}
+              colIndex={colIndex}
+              cell={cell}
+              handleMouseDown={handleMouseDown}
+              handleMouseOver={handleMouseOver}
+              handleMouseUp={handleMouseUp}
+              isGridMode={isGridMode}
+            />
+          ))
+        )}
+        {/* {cells.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <div
               key={rowIndex - colIndex}
@@ -592,24 +660,24 @@ const Grid = ({
                 handleMouseUp(rowIndex, colIndex);
               }}
               className={clsx(
-                " h-6 w-6 select-none hover:bg-[#a2d5b0]",
+                "border-box select-none hover:bg-[#a2d5b0]",
                 { "border border-[#a2d5b0]/0": !isGridMode },
                 { "border border-white": isGridMode },
-                { "bg-amber-950/40": cell.plant }
+                { "bg-amber-950/10": cell.plant }
               )}
             >
               {cell.plant && (
                 <Image
-                  className="h-6 w-6"
-                  width={12}
-                  height={12}
+                  className="h-8 w-8"
+                  width={32}
+                  height={32}
                   src={cell.plant.image}
                   alt={cell.plant.label}
                 />
               )}
             </div>
           ))
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -679,11 +747,11 @@ export const Planner = ({ plants }: PlannerProps) => {
   const [tempSelectedCells, setTempSelectedCells] = useState(new Set<string>());
   const [addedPlants, setAddedPlants] = useState<{ [key: string]: string }>({});
   const [selectedCells, setSelectedCells] = useState<Set<string>>(new Set());
-  const [numRows, setNumRows] = useState(32);
-  const [numCols, setNumCols] = useState(56);
+  const [numRows, setNumRows] = useState(57);
+  const [numCols, setNumCols] = useState(76);
 
-  const maxRows = 32;
-  const maxCols = 56;
+  const maxRows = 57;
+  const maxCols = 76;
 
   const [previewCols, setPreviewCols] = useState(numCols);
   const [previewRows, setPreviewRows] = useState(numRows);
@@ -860,7 +928,7 @@ export const Planner = ({ plants }: PlannerProps) => {
   };
 
   // ---------------ZOOM------------------
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(1.5);
   const increaseZoom = () => {
     setZoom((prevZoom) => Math.min(prevZoom + 0.1, 2)); // Limite le zoom à 2x
   };
@@ -1002,7 +1070,7 @@ export const Planner = ({ plants }: PlannerProps) => {
           className="absolute bottom-10 flex flex-row items-center text-sm font-semibold text-foreground"
         >
           <span className="text-center">Échelle du plan:</span>
-          <span className="w-12 bg-red-400 p-1 text-center">1m</span>
+          <span className="w-10 bg-red-400 p-1 text-center">1m</span>
         </div>
 
         <Grid
@@ -1036,7 +1104,7 @@ export const ModalContent = ({ closeModal }: ModalContentProps) => {
   return (
     <>
       <div onClick={closeModal} className="fixed inset-0 bg-slate-800/75"></div>
-      <div className="fixed z-50 flex h-full w-full translate-y-[-100%] items-center justify-center">
+      <div className="fixed z-50 flex h-full w-full translate-y-[-90%] items-center justify-center">
         <Arrow1 />
         <Arrow3 />
         <div className="fixed w-[40%] rounded bg-white p-8">

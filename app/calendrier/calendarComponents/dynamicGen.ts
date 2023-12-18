@@ -82,6 +82,7 @@ function generateIdealDate(
   plant: Plant
 ) {
   let startDate = new Date(new Date().getFullYear(), 0, 1);
+
   let dayOfWeek = startDate.getDay();
   let desiredDayOfWeek;
   let idealDate;
@@ -151,7 +152,8 @@ const calculateOptimalDate = (plant: Plant) => {
   }
 
   for (let period of culturePeriods) {
-    let idealDate = new Date();
+    // let idealDate = new Date();
+    let idealDate = new Date(new Date().getFullYear(), 0, 1);
     let startWeekIndex = period.startWeek;
     let endWeekIndex = period.endWeek;
 

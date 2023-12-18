@@ -12,7 +12,7 @@ export const Header = async () => {
   return (
     <header className="fixed top-0 z-40 mb-[2rem] w-full border-b bg-background">
       <div className="mx-2 flex h-16 items-center justify-between space-x-4 sm:mx-4">
-        <div className="flex">
+        <div className="flex items-center">
           {/* {session?.user && (
             <>
               <MobileNav /> <ToggleSidebar />
@@ -24,6 +24,9 @@ export const Header = async () => {
             {/* </span>  */}
             🥕
           </Typography>
+          <span className="me-2 rounded border border-blue-400 bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-gray-700 dark:text-blue-400">
+            Demo
+          </span>
         </div>
 
         {/* <div className="flex items-baseline justify-around gap-2">

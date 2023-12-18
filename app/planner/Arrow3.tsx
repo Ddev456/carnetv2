@@ -7,7 +7,8 @@ export const Arrow3 = () => {
       height="139"
       viewBox="0 0 314 139"
       fill="none"
-      className="translate-x-[-140%] translate-y-[50%]"
+      className="absolute bottom-44 left-24"
+      // className="translate-x-[-180%] translate-y-[50%]"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

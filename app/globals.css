@@ -4,6 +4,8 @@
 
 @import '../node_modules/react-day-picker';
 
+@import './print.css';
+
 @layer base {
   :root {
     --background: 0 0% 98%;
