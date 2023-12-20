@@ -1,14 +1,11 @@
-import React from "react";
-
 export const Arrow3 = () => {
   return (
     <svg
+      className="absolute bottom-44 left-24"
       width="314"
       height="139"
       viewBox="0 0 314 139"
       fill="none"
-      className="absolute bottom-44 left-24"
-      // className="translate-x-[-180%] translate-y-[50%]"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

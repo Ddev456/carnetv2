@@ -1,3 +1,8 @@
+import {
+  GardenAction,
+  GardenActions,
+} from "../../../src/components/calendar/useFilter";
+
 type EventCalendar = {
   title: string;
   eventDate: Date;
@@ -16,18 +21,16 @@ export function getEventDataForDay(
   day: Date,
   events: EventCalendar[]
 ): EventData {
-  // const filteredEvents = events.filter((event) => {
-  //   const eventDate = event.eventDate.toISOString().split("T")[0];
-  //   const dayDate = day.toISOString().split("T")[0];
-  //   if (eventDate === dayDate) return eventDate === dayDate;
-  // });
+  const filteredEvents = events.filter((event) => {
+    const eventDate = new Date(event.eventDate);
+    const comparisonDate = new Date(day);
 
-  const filteredEvents = events.filter(
-    (event) =>
-      event.eventDate.getDate() === day.getDate() &&
-      event.eventDate.getMonth() === day.getMonth() &&
-      event.eventDate.getFullYear() === day.getFullYear()
-  );
+    return (
+      eventDate.getDate() === comparisonDate.getDate() &&
+      eventDate.getMonth() === comparisonDate.getMonth() &&
+      eventDate.getFullYear() === comparisonDate.getFullYear()
+    );
+  });
 
   const groupedEvents = filteredEvents.reduce(
     (groups: Record<string, EventCalendar[]>, event) => {
@@ -53,22 +56,14 @@ export function getEventDataForDay(
   return { groupedEvents, flatEvents, totalEvents };
 }
 
-type Filters = {
-  semisSousAbri: boolean;
-  semisEnPleineTerre: boolean;
-  plantation: boolean;
-  floraison: boolean;
-  recolte: boolean;
-};
-
 export function filterEvents(
   events: EventCalendar[],
   searchValue: string,
-  filters: Record<string, boolean>
+  filters: GardenAction[]
 ): EventCalendar[] {
   return events.filter(
     (event) =>
-      filters[event.type] &&
+      filters.some((filter) => filter.type === event.type) &&
       event.title.toLowerCase().includes(searchValue.toLowerCase())
   );
 }

@@ -117,7 +117,7 @@ export const Explorer = ({ data, query }: ExplorerProps) => {
   return (
     <div
       className={clsx(
-        "flex h-full flex-col justify-between gap-2 px-4 md:max-w-[80vw] md:p-4",
+        "flex h-full flex-col justify-between gap-2 px-4 md:p-4",
         {
           "md:pt-[6rem]": !data.isConnected,
         }

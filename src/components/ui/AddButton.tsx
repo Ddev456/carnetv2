@@ -34,7 +34,7 @@ export const AddButton = ({ plant, buttonState }: AddButtonProps) => {
       {" "}
       {buttonState === false ? (
         <form action={handleAction}>
-          <Button className="bg-lime-500/60 hover:bg-lime-500">
+          <Button className="bg-lime-500/80 hover:bg-lime-500">
             Ajouter à mon potager
           </Button>
         </form>

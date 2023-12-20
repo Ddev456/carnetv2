@@ -51,7 +51,7 @@ export default async function RootLayout({
               {session?.user && (
                 <>
                   <MobileNav />
-                  <Sidebar />
+                  <Sidebar user={session?.user} />
                 </>
               )}
               <main className={clsx(session?.user ? "p-0" : "", "w-full")}>

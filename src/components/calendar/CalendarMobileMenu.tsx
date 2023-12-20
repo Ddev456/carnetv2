@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { filterEvents, getEventDataForDay } from "./eventHelper";
+import { filterEvents } from "../../../app/calendrier/calendarComponents/eventHelper";
 import { Button } from "@/components/ui/button";
 import { clsx } from "clsx";
+import { GardenAction } from "../../../src/components/calendar/useFilter";
 
 type EventCalendar = {
   title: string;
@@ -13,8 +14,8 @@ type EventCalendar = {
 
 interface CalendarMobileMenuProps {
   day: Date;
-  events: Record<string, EventCalendar[]>;
-  filters: Record<string, boolean>;
+  events: EventCalendar[];
+  filters: GardenAction[];
   searchValue: string;
 }
 
@@ -29,11 +30,10 @@ export const CalendarMobileMenu = ({
 
   const dayKey = `${day.getFullYear()}-${day.getMonth() + 1}-${day.getDate()}`;
 
-  // Obtenez les événements pour cette date
-  const eventsMobile = events[dayKey] || [];
+  //   const filteredEvents = filterEvents(events, searchValue, filters);
 
-  // Filtrez les événements en fonction des filtres et de la valeur de recherche
-  const filteredEvents = filterEvents(eventsMobile, searchValue, filters);
+  // Filtrez les événements en fonction des filtres, de la valeur de recherche et du jour sélectionné
+  const filteredEvents = filterEvents(events, searchValue, filters);
 
   const scrollContainer = useRef<HTMLDivElement>(null);
   const handlePrev = () => {
@@ -71,7 +71,7 @@ export const CalendarMobileMenu = ({
   };
 
   return (
-    <div className="max-h-[15rem] md:hidden fixed border-t border-borders bottom-0 left-0 right-0 bg-white p-4 flex justify-center">
+    <div className="fixed inset-x-0 bottom-0 flex max-h-[15rem] justify-center border-t border-borders bg-white p-4 md:hidden">
       {filterEvents.length === 0 ? (
         <h3>Aucun événement</h3>
       ) : (
@@ -96,26 +96,26 @@ export const CalendarMobileMenu = ({
               <path d="M14 6l-6 6l6 6v-12" />
             </svg>
           </Button>
-          <div className="overflow-x-auto flex" ref={scrollContainer}>
-            {Object.entries(events).map(([type, events], index) => (
+          <div className="flex overflow-x-auto" ref={scrollContainer}>
+            {Object.entries(filteredEvents).map(([type, typeEvents], index) => (
               <div
                 key={index}
                 className={clsx(
-                  "min-w-full flex-shrink-0",
+                  "min-w-full shrink-0",
                   index === activeIndex ? "block" : "none"
                 )}
               >
-                <h2 className="text-lg font-bold mb-2">{type}</h2>
+                <h2 className="mb-2 text-lg font-bold">{type}</h2>
                 {events.length === 0 ? (
                   <h3>Aucun événement</h3>
                 ) : (
-                  events.map((event, eventIndex) => (
+                  events.map((event: EventCalendar, eventIndex: number) => (
                     <div
                       key={eventIndex}
                       className="border-b border-gray-200 py-2"
                     >
                       <p className="text-sm text-gray-600">
-                        {events[0].description}{" "}
+                        {event.description}{" "}
                         {/* Affiche seulement le premier emoji */}
                       </p>
                     </div>

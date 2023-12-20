@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { filterEvents } from "./eventHelper";
+import { filterEvents } from "../../../app/calendrier/calendarComponents/eventHelper";
 import {
   Tooltip,
   TooltipContent,
@@ -16,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
+import { GardenAction } from "./useFilter";
 
 type EventCalendar = {
   title: string;
@@ -28,18 +29,18 @@ type EventCalendar = {
 type DayProps = {
   day: Date;
   groupedEvents: Record<string, EventCalendar[]>;
-  handleDayClick: (day: Date) => void;
-  filters: Record<string, boolean>;
+  handleDayClick: (day: Date, Events: EventCalendar[]) => void;
+  filters: GardenAction[];
   searchValue: string;
 };
 
-export function Day({
+export const Day = ({
   day,
   groupedEvents,
   handleDayClick,
   filters,
   searchValue,
-}: DayProps) {
+}: DayProps) => {
   const currentDate = new Date(Date.now());
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth();
@@ -57,7 +58,7 @@ export function Day({
       className={clsx(
         "group relative flex h-[3rem] cursor-pointer flex-col gap-1 border border-gray-200 p-2 text-gray-500 md:max-h-[8rem] md:min-h-[8rem] md:w-full md:p-4"
       )}
-      onClick={() => handleDayClick(day)}
+      onClick={() => handleDayClick(day, filteredEvents)}
     >
       <div
         className={clsx(
@@ -73,7 +74,10 @@ export function Day({
         <div className="bottom-0 ml-3 mt-4 h-2 w-2 rounded-full bg-orange-500 md:hidden"></div>
       )}
       {filteredEvents.slice(0, 2).map((event, eventIndex) => (
-        <div key={eventIndex} className={`hidden md:block ${event.colorCode}`}>
+        <div
+          key={eventIndex}
+          className={`bg-[${event.colorCode}] hidden md:block`}
+        >
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -176,4 +180,4 @@ export function Day({
       )}
     </div>
   );
-}
+};

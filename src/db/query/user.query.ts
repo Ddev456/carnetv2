@@ -30,6 +30,33 @@ export const getUserNotifications = async (userId?: string) => {
   return { data: data?.plantsEvents };
 };
 
+export const getUserPreferences = async (userId?: string) => {
+  if (!userId)
+    return {
+      department: 56,
+      gardeningDays: [0, 1, 2, 3, 4, 5, 6],
+    };
+  const data = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    select: {
+      preferences: {
+        select: {
+          department: true,
+          gardeningDays: true,
+        },
+      },
+    },
+  });
+
+  return data.preferences[0];
+};
+
+export type UserPreferences = Prisma.PromiseReturnType<
+  typeof getUserPreferences
+>;
+
 export type Notifications = Prisma.PromiseReturnType<
   typeof getUserNotifications
 >["data"];

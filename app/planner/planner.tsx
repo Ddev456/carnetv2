@@ -1110,8 +1110,8 @@ export const ModalContent = ({ closeModal }: ModalContentProps) => {
         <div className="fixed w-[40%] rounded bg-white p-8">
           <h2 className="mb-4 text-2xl">Guide d utilisation rapide</h2>
           <p className="mb-4">
-            Dessine ton potager à l aide de zones comme la pelouse, les arbres,
-            les murs, les haies, les plantes etc ...
+            Dessinez vote potager à l aide de zones comme la pelouse, les
+            arbres, les murs, les haies, les plantes etc ...
           </p>
           <button
             className="rounded bg-blue-500 px-4 py-2 text-white"

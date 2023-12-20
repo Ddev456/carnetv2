@@ -65,6 +65,21 @@ model User {
     sessions     Session[]
     plantsEvents Notification[]
     tasks        Task[]
+    preferences  UserPreferences[]
+}
+
+model UserPreferences {
+    id              Int     @id @default(autoincrement())
+    userId          String
+    visitedExplorer Boolean @default(false)
+    visitedCalendar Boolean @default(false)
+    visitedPlanner  Boolean @default(false)
+    department      String  @default("56")
+    gardeningDays   Int[]
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@unique([userId])
 }
 
 enum CategoryType {

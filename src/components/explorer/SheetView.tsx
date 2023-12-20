@@ -50,7 +50,7 @@ export const SheetView = ({
         />
       )}
       {plant && (
-        <div className="mt-[5rem] flex flex-row flex-wrap items-start gap-3 bg-[#0f8b8d]/30 md:justify-between">
+        <div className="mt-[2.5rem] flex flex-row flex-wrap items-start gap-3 rounded-xl bg-[#0f8b8d]/20 p-2 md:justify-between">
           <Image
             className="mt-[-4rem]"
             alt="plant thumbnail"
@@ -62,30 +62,32 @@ export const SheetView = ({
             width={180}
             height={180}
           />
-          <span className="p-4 font-bold uppercase text-foreground">
-            Plante sélectionnée :{plant.name}
+          <span className="p-4 text-2xl capitalize text-foreground/80">
+            {/* Plante sélectionnée : */}
+            {plant.name}
           </span>
-          <div className="flex w-full justify-between">
-            {isReadOnly ? (
-              <MustLoggedAlert />
-            ) : (
-              <AddButton
-                plant={plant}
-                buttonState={checkExist(userPotager, plant.id)}
-              />
-            )}
-          </div>
-          <div className="flex flex-wrap gap-4">
+          {isReadOnly ? (
+            <MustLoggedAlert />
+          ) : (
+            <AddButton
+              plant={plant}
+              buttonState={checkExist(userPotager, plant.id)}
+            />
+          )}
+          {/* <div className="flex w-full justify-between">
+            
+          </div> */}
+          <div className="mb-[5%] flex flex-wrap gap-4 md:w-full md:justify-between">
             <div className="flex items-center justify-between">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="text-capitalize bg-accent/30 p-2 hover:bg-accent/40">
+                    <Badge className="text-capitalize bg-secondary/80 p-2 hover:bg-secondary/60">
                       {/* <Sprout size={24} /> */}
                       ⏱️ {plant?.type}
                     </Badge>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-accent/90 p-4 text-foreground">
+                  <TooltipContent className="bg-secondary/90 p-4 text-foreground">
                     <p>Type de plante: Annuelle/ Bisannuelle ou Vivace</p>
                     <p>
                       Les plantes vivaces sont pérennes alors que les autres
@@ -100,7 +102,7 @@ export const SheetView = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="bg-secondary/30 p-2 hover:bg-secondary/40">
+                    <Badge className="bg-secondary/80 p-2 hover:bg-secondary/60">
                       {/* <CloudSun size={24} /> */}
                       {exposition[plant?.exposition ?? 0]}
                     </Badge>
@@ -119,12 +121,12 @@ export const SheetView = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="bg-primary/30 p-2 hover:bg-primary/40">
+                    <Badge className="bg-secondary/80 p-2 hover:bg-secondary/60">
                       💧
                       {water[plant?.water ?? 0]}
                     </Badge>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-primary/90 p-4 text-foreground">
+                  <TooltipContent className="bg-secondary/90 p-4 text-foreground">
                     <p>
                       Niveau d'arrosage (Arrosage léger, modéré ou régulier)
                     </p>
@@ -141,7 +143,7 @@ export const SheetView = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="bg-destructive/10 p-2 hover:bg-destructive/20">
+                    <Badge className="bg-secondary/80 p-2 hover:bg-secondary/60">
                       {/* <Space size={24} /> */}
                       📏 {plant?.spaceBetween} cm
                     </Badge>
@@ -161,7 +163,7 @@ export const SheetView = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Badge className="bg-destructive/10 p-2 hover:bg-destructive/20">
+                    <Badge className="bg-secondary/80 p-2 hover:bg-secondary/60">
                       {/* <AlignHorizontalSpaceAround size={24} /> */}
                       📍 {plant?.spaceOnRow} cm sur le rang
                     </Badge>

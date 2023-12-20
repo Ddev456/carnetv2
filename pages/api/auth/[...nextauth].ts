@@ -30,10 +30,24 @@ export const authOptions: AuthOptions = {
   ],
   secret: env.NEXT_SECRET,
   callbacks: {
-    session({ session, user }) {
-      session.user.id = user.id;
-      session.user.image = user.image;
-      session.user.role = user.role;
+    async session({ session, user }) {
+      // Récupérez les préférences de l'utilisateur à partir de la base de données
+      const userPreferences = await prisma.userPreferences.findUnique({
+        where: { userId: user.id },
+      });
+
+      // Créez un nouvel objet pour la session utilisateur
+      const sessionUser = {
+        ...session.user,
+        id: user.id,
+        image: user.image,
+        role: user.role,
+        preferences: userPreferences,
+      };
+
+      // Remplacez session.user par le nouvel objet
+      session.user = sessionUser;
+
       return session;
     },
   },
