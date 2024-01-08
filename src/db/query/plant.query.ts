@@ -6,11 +6,15 @@ export const getPlants = async () => {
     select: {
       id: true,
       name: true,
-      culturePeriods: {
+      cultivationPeriods: {
         select: {
           id: true,
-          startWeek: true,
-          endWeek: true,
+          coversowingPeriod: true,
+          sowingPeriod: true,
+          plantingPeriod: true,
+          transplantingPeriod: true,
+          floweringPeriod: true,
+          harvestingPeriod: true,
           plantId: true,
           periodType: true,
         },

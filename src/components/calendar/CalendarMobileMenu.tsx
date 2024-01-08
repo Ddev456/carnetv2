@@ -6,9 +6,9 @@ import { GardenAction } from "../../../src/components/calendar/useFilter";
 
 type EventCalendar = {
   title: string;
+  icon: string;
   eventDate: Date;
   description: string;
-  colorCode: string;
   type: string;
 };
 
@@ -71,7 +71,7 @@ export const CalendarMobileMenu = ({
   };
 
   return (
-    <div className="fixed inset-x-0 bottom-0 flex max-h-[15rem] justify-center border-t border-borders bg-white p-4 md:hidden">
+    <div className="fixed inset-x-0 bottom-0 flex max-h-[15rem] justify-center border-t border-borders bg-background/80 p-4 md:hidden">
       {filterEvents.length === 0 ? (
         <h3>Aucun événement</h3>
       ) : (
@@ -96,7 +96,10 @@ export const CalendarMobileMenu = ({
               <path d="M14 6l-6 6l6 6v-12" />
             </svg>
           </Button>
-          <div className="flex overflow-x-auto" ref={scrollContainer}>
+          <div
+            className="hide-scrollbar flex overflow-x-auto"
+            ref={scrollContainer}
+          >
             {Object.entries(filteredEvents).map(([type, typeEvents], index) => (
               <div
                 key={index}
@@ -105,18 +108,17 @@ export const CalendarMobileMenu = ({
                   index === activeIndex ? "block" : "none"
                 )}
               >
-                <h2 className="mb-2 text-lg font-bold">{type}</h2>
+                {/* <h2 className="mb-2 text-center text-lg font-bold">{type}</h2> */}
                 {events.length === 0 ? (
                   <h3>Aucun événement</h3>
                 ) : (
                   events.map((event: EventCalendar, eventIndex: number) => (
                     <div
                       key={eventIndex}
-                      className="border-b border-gray-200 py-2"
+                      className="border-b border-borders py-2"
                     >
-                      <p className="text-sm text-gray-600">
-                        {event.description}{" "}
-                        {/* Affiche seulement le premier emoji */}
+                      <p className="text-sm text-secondary">
+                        {event.description}
                       </p>
                     </div>
                   ))

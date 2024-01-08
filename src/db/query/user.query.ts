@@ -33,7 +33,7 @@ export const getUserNotifications = async (userId?: string) => {
 export const getUserPreferences = async (userId?: string) => {
   if (!userId)
     return {
-      department: 56,
+      department: "56",
       gardeningDays: [0, 1, 2, 3, 4, 5, 6],
     };
   const data = await prisma.user.findUniqueOrThrow({

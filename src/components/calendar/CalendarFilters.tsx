@@ -4,6 +4,7 @@ import { useFilter } from "./useFilter";
 
 export const CalendarFilters = () => {
   const { gardenActions, setGardenAction } = useFilter();
+
   return (
     <div className="flex gap-2">
       {gardenActions.map((action) => (

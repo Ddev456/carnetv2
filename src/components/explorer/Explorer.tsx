@@ -6,10 +6,8 @@ import { CalendarView } from "./CalendarView";
 import { CategoryView } from "./CategoryView";
 import { SheetView } from "./SheetView";
 import { type Plants, type Plant } from "@/db/query/plant.query";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { getUserNotifications } from "@/db/query/user.query.js";
 import clsx from "clsx";
+import { Advices } from "./Advices";
 
 type ExplorerData = {
   plants: Plant[];
@@ -115,36 +113,38 @@ export const Explorer = ({ data, query }: ExplorerProps) => {
   };
 
   return (
-    <div
-      className={clsx(
-        "flex h-full flex-col justify-between gap-2 px-4 md:p-4",
-        {
-          "md:pt-[6rem]": !data.isConnected,
-        }
-      )}
-    >
-      <PlantsComboBox
-        categories={categories}
-        selectedCategory={selectedCategory}
-        handleSelect={handleSelect}
-        onSelectCategory={onSelectCategory}
-      />
-      <CategoryView
-        selected={selected}
-        selectedCategory={selectedCategory}
-        categories={categories}
-        plants={data.plants}
-        handleListOfPlants={handleListOfPlants}
-        onSelect={handleSelect}
-        onSelectCategory={onSelectCategory}
-      />
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2  md:flex-row ">
+      <div className="flex w-full flex-col p-4 md:w-[40%] xl:w-[20%]">
+        <div className="w-full rounded-xl bg-secondary/40 p-4">
+          <PlantsComboBox
+            categories={categories}
+            selectedCategory={selectedCategory}
+            handleSelect={handleSelect}
+            onSelectCategory={onSelectCategory}
+          />
+          <CategoryView
+            selected={selected}
+            selectedCategory={selectedCategory}
+            categories={categories}
+            plants={data.plants}
+            handleListOfPlants={handleListOfPlants}
+            onSelect={handleSelect}
+            onSelectCategory={onSelectCategory}
+          />
+        </div>
+      </div>
+
+      <div className="hide-scrollbar flex w-full flex-col gap-4 p-4 md:h-[80vh] md:w-[60%] md:overflow-y-scroll xl:w-[80%] ">
         <SheetView
           plant={selected}
           isReadOnly={!data.isConnected}
           userPotager={data.userPotager}
         />
-        <CalendarView plant={selected} plants={data.plants} />
+        {selected.cultivationPeriods.length > 0 && (
+          <CalendarView plant={selected} plants={data.plants} />
+        )}
+
+        <Advices plant={selected} />
       </div>
     </div>
   );

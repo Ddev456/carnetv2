@@ -1,6 +1,6 @@
 import temperatureAvg from "@/components/calendar/tempsByWeek.json";
-import { type Plant } from "../../../src/db/query/plant.query";
-import { addDays, getWeek } from "date-fns";
+import { type Plant } from "../../db/query/plant.query";
+import { addDays, addWeeks, getWeek } from "date-fns";
 
 // 0 = sowing 1 = planting 2 = coverSowing 3 = transplanting 4 = flowering 5 = harvesting
 
@@ -34,13 +34,13 @@ export type Period = {
 export interface DynamicData {
   stage: Stage;
   date: Date;
-  plantId: string;
+  plantId: number;
   plantName: string;
   isWithinPeriod: boolean;
 }
 
 interface UserIteration {
-  plantId: string;
+  plantId: number;
   SOWING?: { iteration: number; interval: number };
   COVERSOWING?: { iteration: number; interval: number };
   PLANTING?: { iteration: number; interval: number };
@@ -51,7 +51,7 @@ interface UserIteration {
 
 const userIterations: UserIteration[] = [
   {
-    plantId: "clq3v0amw0000tlxks6x93seq", //id de la Tomate
+    plantId: 2, //id de la Tomate
     COVERSOWING: {
       iteration: 2,
       interval: 4,
@@ -85,9 +85,11 @@ function generateIdealDate(
     desiredDayOfWeek =
       userGardeningDays[gardeningDayIndices.index % userGardeningDays.length];
     let daysDifference = (7 + desiredDayOfWeek - dayOfWeek) % 7;
+    let startDays = idealStartWeekIndex * 7 + (daysToAdd + daysDifference);
+
     idealDate = addDays(
       startDate,
-      idealStartWeekIndex * 7 + daysToAdd + daysDifference
+      idealStartWeekIndex * 7 + (daysToAdd + daysDifference)
     );
     gardeningDayIndices.index++;
   } while (!userGardeningDays.includes(idealDate.getDay()));
@@ -114,7 +116,7 @@ const calculateOptimalDate = (
   userGardeningDays: number[]
 ) => {
   let gardeningDayIndices = { index: 0 };
-  const culturePeriods = plant.culturePeriods;
+  const culturePeriods = plant.cultivationPeriods;
   const CONSTANT = 0.8;
   let tempDiff = plant.optimalTemp - plant.vegetationZero;
   let idealStartTemp = plant.optimalTemp - tempDiff * CONSTANT;
@@ -133,7 +135,7 @@ const calculateOptimalDate = (
   function calculateIdealStartWeekIndex(
     startWeekIndex: number,
     endWeekIndex: number,
-    climate: any[],
+    climate: Climate,
     idealStartTemp: number
   ) {
     let idealStartWeekIndex = -1;
@@ -158,127 +160,157 @@ const calculateOptimalDate = (
     return idealStartWeekIndex;
   }
 
-  for (let period of culturePeriods) {
-    // let idealDate = new Date();
+  plant.cultivationPeriods.map((period) => {
     let idealDate = new Date(new Date().getFullYear(), 0, 1);
-    let startWeekIndex = period.startWeek;
-    let endWeekIndex = period.endWeek;
 
-    let idealStartWeekIndex = calculateIdealStartWeekIndex(
-      startWeekIndex,
-      endWeekIndex,
-      climate,
-      idealStartTemp
-    );
-    if (
-      period.periodType === "SOWING" ||
-      period.periodType === "PLANTING" ||
-      period.periodType === "COVERSOWING" ||
-      period.periodType === "TRANSPLANTING"
-    ) {
-      // let idealStartWeekIndex = -1;
+    for (let type of period.periodType) {
+      let startWeekIndex = 0;
+      let endWeekIndex = 0;
 
-      // Boucler sur les semaines de la période de culture
-      // for (
-      //   let i = startWeekIndex;
-      //   i < endWeekIndex && i <= climate.length - 5;
-      //   i++
-      // ) {
-      //   const fiveWeeks = climate.slice(i, i + 5);
-      //   if (
-      //     fiveWeeks.every(
-      //       (week) => week !== null && week.tempAvg > idealStartTemp
-      //     )
-      //   ) {
-      //     idealStartWeekIndex = i;
-      //     break;
-      //   }
-      // }
+      switch (type) {
+        case "COVERSOWING":
+          startWeekIndex = period.coversowingPeriod[0];
+          endWeekIndex = period.coversowingPeriod[1];
+          break;
+        case "SOWING":
+          startWeekIndex = period.sowingPeriod[0];
+          endWeekIndex = period.sowingPeriod[1];
+          break;
+        case "PLANTING":
+          startWeekIndex = period.plantingPeriod[0];
+          endWeekIndex = period.plantingPeriod[1];
 
-      let gardeningDayIndex = 0;
-      if (period.periodType === "SOWING" || period.periodType === "PLANTING") {
-        if (idealStartWeekIndex !== -1) {
+          break;
+        case "TRANSPLANTING":
+          startWeekIndex = period.transplantingPeriod[0];
+          endWeekIndex = period.transplantingPeriod[1];
+          break;
+        default:
+          break;
+      }
+      // let startWeekIndex = periodTime[0];
+      // let endWeekIndex = periodTime[1];
+
+      // const weekIndexes = [{ coverSowingStart: period.coversowingPeriod[0] }];
+      // let startWeekIndex = period.startWeek;
+      // let endWeekIndex = period.endWeek;
+
+      let idealStartWeekIndex = calculateIdealStartWeekIndex(
+        startWeekIndex,
+        endWeekIndex,
+        climate,
+        idealStartTemp
+      );
+      if (
+        type === "SOWING" ||
+        type === "PLANTING" ||
+        type === "COVERSOWING" ||
+        type === "TRANSPLANTING"
+      ) {
+        let gardeningDayIndex = 0;
+        if (type === "SOWING" || type === "PLANTING") {
+          // if (idealStartWeekIndex !== -1) {
           let dateObject = generateIdealDate(
             idealStartWeekIndex,
             0,
             userGardeningDays,
             gardeningDayIndices,
-            period,
+            {
+              startWeek: startWeekIndex,
+              endWeek: endWeekIndex,
+              periodType: type as Stage,
+            },
             plant
           );
           dates.push(dateObject);
           gardeningDayIndex++;
         }
+        // }
+        if (type === "COVERSOWING") {
+          let dateObject = generateIdealDate(
+            idealStartWeekIndex,
+            -plant.readyToPlantTime,
+            userGardeningDays,
+            gardeningDayIndices,
+            {
+              startWeek: startWeekIndex,
+              endWeek: endWeekIndex,
+              periodType: type as Stage,
+            },
+            plant
+          );
+          dates.push(dateObject);
+          gardeningDayIndex++;
+        }
+        if (type === "TRANSPLANTING") {
+          let dateTPObject = generateIdealDate(
+            idealStartWeekIndex,
+            +plant.readyToPlantTime + 21,
+            userGardeningDays,
+            gardeningDayIndices,
+            {
+              startWeek: startWeekIndex,
+              endWeek: endWeekIndex,
+              periodType: type as Stage,
+            },
+            plant
+          );
+          dates.push(dateTPObject);
+
+          gardeningDayIndex++;
+        }
       }
-      if (period.periodType === "COVERSOWING") {
-        let dateObject = generateIdealDate(
-          idealStartWeekIndex,
-          -plant.readyToPlantTime,
-          userGardeningDays,
-          gardeningDayIndices,
-          period,
-          plant
+
+      if (userIterations) {
+        let matchingIteration = userIterations.find(
+          (iteration) => iteration.plantId === plant.id
         );
-        dates.push(dateObject);
-        gardeningDayIndex++;
-      }
-      if (period.periodType === "TRANSPLANTING") {
-        let dateTPObject = generateIdealDate(
-          idealStartWeekIndex,
-          +plant.readyToPlantTime + 21,
-          userGardeningDays,
-          gardeningDayIndices,
-          period,
-          plant
-        );
-        dates.push(dateTPObject);
+        if (
+          matchingIteration &&
+          matchingIteration[type as keyof UserIteration]
+        ) {
+          let iteration =
+            (
+              matchingIteration[type as keyof UserIteration] as {
+                iteration: number;
+                interval: number;
+              }
+            )?.iteration || 1;
+          let interval =
+            (
+              matchingIteration[type as keyof UserIteration] as {
+                iteration: number;
+                interval: number;
+              }
+            )?.interval || 1;
 
-        gardeningDayIndex++;
-      }
-    }
+          const startIterationDate = new Date(idealDate);
+          for (let userIteration of userIterations) {
+            for (let i = 1; i < iteration; i++) {
+              const coverSowingDTO = -plant.readyToPlantTime + i * interval * 7;
+              const transplantingDTO =
+                +plant.readyToPlantTime + i * interval * 7;
 
-    if (userIterations) {
-      let matchingIteration = userIterations.find(
-        (iteration) => iteration.plantId === plant.id
-      );
-      if (matchingIteration && matchingIteration[period.periodType]) {
-        let iteration = matchingIteration[period.periodType]?.iteration || 1;
-        let interval = matchingIteration[period.periodType]?.interval || 1;
-        const startIterationDate = new Date(idealDate);
-        for (let userIteration of userIterations) {
-          for (let i = 1; i < iteration; i++) {
-            const coverSowingDTO = -plant.readyToPlantTime + i * interval * 7;
-            const transplantingDTO = +plant.readyToPlantTime + i * interval * 7;
-
-            let dateObject = generateIdealDate(
-              idealStartWeekIndex,
-              period.periodType === "COVERSOWING"
-                ? coverSowingDTO
-                : transplantingDTO,
-              userGardeningDays,
-              gardeningDayIndices,
-              period,
-              plant
-            );
-            dates.push(dateObject);
-            gardeningDayIndex++;
-
-            // let dateTPObject = generateIdealDate(
-            //   idealStartWeekIndex,
-            //   +plant.readyToPlantTime + 21 + i * interval * 7,
-            //   userGardeningDays,
-            //   gardeningDayIndices,
-            //   period,
-            //   plant
-            // );
-            // dates.push(dateTPObject);
-            // gardeningDayIndex++;
+              let dateObject = generateIdealDate(
+                idealStartWeekIndex,
+                type === "COVERSOWING" ? coverSowingDTO : transplantingDTO,
+                userGardeningDays,
+                gardeningDayIndices,
+                {
+                  startWeek: startWeekIndex,
+                  endWeek: endWeekIndex,
+                  periodType: type as Stage,
+                },
+                plant
+              );
+              dates.push(dateObject);
+              gardeningDayIndex++;
+            }
           }
         }
       }
     }
-  }
-
+  });
   return dates;
 };
 

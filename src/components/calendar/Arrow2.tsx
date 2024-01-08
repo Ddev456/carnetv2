@@ -1,7 +1,7 @@
 export const Arrow2 = () => {
   return (
     <svg
-      className="absolute left-20 top-0"
+      className="absolute left-20  top-0 h-[15rem] w-[15rem] md:h-[170px] md:w-[483px]"
       width="483"
       height="170"
       viewBox="0 0 483 170"

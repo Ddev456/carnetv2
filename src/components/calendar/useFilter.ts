@@ -25,7 +25,7 @@ export const useFilter = () => {
     },
     {
       type: "TRANSPLANTING",
-      label: "Transplantation",
+      label: "Repiquage",
       color: "#EBDACA",
       status: false,
     },
@@ -35,10 +35,12 @@ export const useFilter = () => {
   const setGardenAction = (type: string, status: boolean) => {
     const newGardenActions = gardenActions.map((action) => {
       if (action.type === type) {
-        return { ...action, status };
+        return { ...action, status: status };
+      } else {
+        return action;
       }
-      return action;
     });
+
     setGardenActions(newGardenActions);
   };
   return { gardenActions, setGardenAction };

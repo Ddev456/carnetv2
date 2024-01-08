@@ -2,9 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import temperatureAvg from "./tempsByWeek.json";
 import { DynamicData, dynamic } from "./dynamicGen";
 import { EventCalendar } from "./Calendar";
-import { Plants } from "../../db/query/plant.query";
+import { Plant, Plants } from "../../db/query/plant.query";
 import { useFilter } from "./useFilter";
 import { UserPreferences } from "../../db/query/user.query";
+import React from "react";
+import Image from "next/image";
 
 export const useCalendarData = (plants: Plants, userPrefs: UserPreferences) => {
   const { gardenActions } = useFilter();
@@ -26,12 +28,23 @@ export const useCalendarData = (plants: Plants, userPrefs: UserPreferences) => {
   const [dynamicData, setDynamicData] = useState<DynamicData[]>([]);
 
   useEffect(() => {
-    const temps =
-      filteredTemperatureAvg.find(
-        (temp) => temp.deptCode === selectedDepartment
-      )?.temps || [];
+    // const temps = filteredTemperatureAvg.find(
+    //   (temp) => temp.deptCode === selectedDepartment
+    // ).temps;
+    const temperatureAvg = filteredTemperatureAvg.find(
+      (temp) => temp.deptCode === selectedDepartment
+    );
+
+    if (!temperatureAvg) {
+      throw new Error(
+        `No temperature average found for department ${selectedDepartment}`
+      );
+    }
+
+    const temps = temperatureAvg.temps;
+
     setDynamicData(dynamic(plants, temps, selectedDays));
-  }, [selectedDepartment, selectedDays, filteredTemperatureAvg, plants]);
+  }, [plants, filteredTemperatureAvg, selectedDepartment, selectedDays]);
 
   const handleDynamicCalendar = (
     department: string,
@@ -66,11 +79,19 @@ export const useCalendarData = (plants: Plants, userPrefs: UserPreferences) => {
     () =>
       dynamicData.flatMap((plantData) => ({
         eventDate: plantData.date,
-        title: plantData.plantName,
+        title: getTitle(
+          plantData,
+          plants[
+            plants.findIndex((plant) => plant.name === plantData.plantName)
+          ]
+        ),
+        icon: plants[
+          plants.findIndex((plant) => plant.name === plantData.plantName)
+        ].icon,
         description: getDescription(plantData),
-        colorCode:
-          gardenActions.find((action) => action.type === plantData.stage)
-            ?.color ?? "",
+        // colorCode:
+        //   gardenActions.find((action) => action.type === plantData.stage)
+        //     ?.color ?? "",
         type: plantData.stage,
       })),
     [dynamicData, gardenActions]
@@ -131,6 +152,20 @@ export const useCalendarData = (plants: Plants, userPrefs: UserPreferences) => {
   };
 };
 
+function getTitle(plantData: DynamicData, plant: Plant): string {
+  switch (plantData.stage) {
+    case "SOWING":
+      return "Semis";
+    case "COVERSOWING":
+      return "Semis SA";
+    case "TRANSPLANTING":
+      return "Repiquage";
+    case "PLANTING":
+      return "Plantation";
+    default:
+      return "";
+  }
+}
 function getDescription(plantData: DynamicData): string {
   switch (plantData.stage) {
     case "SOWING":

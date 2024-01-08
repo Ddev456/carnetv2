@@ -41,20 +41,25 @@ export default async function RootLayout({
         </head>
         <body
           className={cn(
-            "h-full bg-secondary/60 font-heading antialiased",
+            "bg-background font-heading antialiased",
             poppins.variable
           )}
         >
           <Providers>
+            <Header />
             <section className="relative flex">
-              <Header />
               {session?.user && (
                 <>
                   <MobileNav />
                   <Sidebar user={session?.user} />
                 </>
               )}
-              <main className={clsx(session?.user ? "p-0" : "", "w-full")}>
+              <main
+                className={clsx(
+                  session?.user ? "p-0 md:h-screen" : "max-h-custom",
+                  "w-full"
+                )}
+              >
                 {children}
               </main>
               {/* <FooterNav /> */}

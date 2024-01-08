@@ -29,20 +29,22 @@ export const DaySelector = ({ onSelect }: DaySelectorProps) => {
   };
 
   return (
-    <div>
-      {daysOfWeek.map((day, index) => (
-        <div key={index}>
-          <label>
-            <input
-              type="checkbox"
-              value={index}
-              checked={selectedDays.includes(index)}
-              onChange={handleCheckboxChange}
-            />
-            {day}
-          </label>
-        </div>
-      ))}
+    <div className="flex flex-col items-center">
+      <div className="flex flex-wrap justify-between gap-1 md:flex-nowrap">
+        {daysOfWeek.map((day, index) => (
+          <div key={index}>
+            <label>
+              <input
+                type="checkbox"
+                value={index}
+                checked={selectedDays.includes(index)}
+                onChange={handleCheckboxChange}
+              />
+              {day}
+            </label>
+          </div>
+        ))}
+      </div>
       <Button onClick={() => onSelect(selectedDays)}>Continuer</Button>
     </div>
   );

@@ -45,22 +45,20 @@ const CalendarGrid = ({
       ></div>
     );
   }
+
   return (
     <div className="grid grid-cols-7 px-2 text-center text-sm md:px-0">
       {weekDays.map((day, index) => (
         <div
           key={index}
-          className="border-b border-gray-200 py-2 font-semibold text-gray-700"
+          className="text-text border-b border-borders py-2 font-semibold"
         >
           {day}
         </div>
       ))}
       {emptyCells}
       {dates.map((day, index) => {
-        const { groupedEvents, flatEvents, totalEvents } = getEventDataForDay(
-          day,
-          recurringEvents
-        );
+        const groupedEvents = getEventDataForDay(day, recurringEvents);
 
         return (
           <Day

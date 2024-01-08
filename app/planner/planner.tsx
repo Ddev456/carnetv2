@@ -536,6 +536,7 @@ type CellProps = {
   handleMouseOver: (rowIndex: number, colIndex: number) => void;
   handleMouseUp: (rowIndex: number, colIndex: number) => void;
   isGridMode: boolean;
+  selectedCells: Set<string>;
 };
 
 const Cell = memo(function Cell({
@@ -546,7 +547,17 @@ const Cell = memo(function Cell({
   handleMouseOver,
   handleMouseUp,
   isGridMode,
+  selectedCells,
 }: CellProps) {
+  const isSelected = selectedCells.has(`${rowIndex}-${colIndex}`);
+  const isTopBorder =
+    isSelected && !selectedCells.has(`${rowIndex - 1}-${colIndex}`);
+  const isBottomBorder =
+    isSelected && !selectedCells.has(`${rowIndex + 1}-${colIndex}`);
+  const isLeftBorder =
+    isSelected && !selectedCells.has(`${rowIndex}-${colIndex - 1}`);
+  const isRightBorder =
+    isSelected && !selectedCells.has(`${rowIndex}-${colIndex + 1}`);
   return (
     <div
       key={`${rowIndex}-${colIndex}`}
@@ -563,14 +574,18 @@ const Cell = memo(function Cell({
         "border-box select-none hover:bg-[#a2d5b0]",
         { "border border-[#a2d5b0]/0": !isGridMode },
         { "border border-white": isGridMode },
-        { "bg-amber-950/10": cell.plant }
+        { "": cell.plant },
+        { "border-t-1 border-[#8C7A5E]": isTopBorder },
+        { "border-b-1 border-[#8C7A5E]": isBottomBorder },
+        { "border-l-1 border-[#8C7A5E]": isLeftBorder },
+        { "border-r-1 border-[#8C7A5E]": isRightBorder }
       )}
     >
       {cell.plant && (
         <Image
-          className="pointer-events-none h-8 w-8"
-          width={32}
-          height={32}
+          className={clsx("pointer-events-none h-5 w-5")}
+          width={24}
+          height={24}
           src={cell.plant.image}
           alt={cell.plant.label}
         />
@@ -596,6 +611,7 @@ type GridProps = {
   grabMouseDown: (event: MouseEvent) => void;
   grabMouseUp: () => void;
   grabMouseMove: (event: MouseEvent) => void;
+  selectedCells: Set<string>;
 };
 
 const Grid = ({
@@ -615,6 +631,7 @@ const Grid = ({
   grabMouseDown,
   grabMouseUp,
   grabMouseMove,
+  selectedCells,
 }: GridProps) => {
   return (
     <div
@@ -630,7 +647,7 @@ const Grid = ({
           cursor: isGrabMode && zoom > 1 ? "grab" : "default",
           transform: `scale(${zoom}) translate(${translation.x}px, ${translation.y}px)`,
         }}
-        className={`grid h-[200vh] w-[200vh] grid-cols-76 grid-rows-57`}
+        className={`grid h-[200vh] w-[200vh] grid-cols-64 grid-rows-64`}
       >
         {cells.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
@@ -643,6 +660,7 @@ const Grid = ({
               handleMouseOver={handleMouseOver}
               handleMouseUp={handleMouseUp}
               isGridMode={isGridMode}
+              selectedCells={selectedCells}
             />
           ))
         )}
@@ -747,11 +765,11 @@ export const Planner = ({ plants }: PlannerProps) => {
   const [tempSelectedCells, setTempSelectedCells] = useState(new Set<string>());
   const [addedPlants, setAddedPlants] = useState<{ [key: string]: string }>({});
   const [selectedCells, setSelectedCells] = useState<Set<string>>(new Set());
-  const [numRows, setNumRows] = useState(57);
-  const [numCols, setNumCols] = useState(76);
+  const [numRows, setNumRows] = useState(64);
+  const [numCols, setNumCols] = useState(64);
 
-  const maxRows = 57;
-  const maxCols = 76;
+  const maxRows = 64;
+  const maxCols = 64;
 
   const [previewCols, setPreviewCols] = useState(numCols);
   const [previewRows, setPreviewRows] = useState(numRows);
@@ -1043,7 +1061,7 @@ export const Planner = ({ plants }: PlannerProps) => {
       {showModal &&
         !isMobileScreen &&
         createPortal(<ModalContent closeModal={closeModal} />, document.body)}
-      <div className="relative flex min-h-screen items-center justify-center bg-[#F9F3F3] p-4 text-[#000001]">
+      <div className="relative mt-4 w-[70%] items-center justify-center bg-[#F9F3F3] p-4 text-[#000001]">
         <Toolbar
           selectedPlant={selectedPlant}
           updateSelectedPlant={updateSelectedPlant}
@@ -1090,6 +1108,7 @@ export const Planner = ({ plants }: PlannerProps) => {
           grabMouseDown={grabMouseDown}
           grabMouseUp={grabMouseUp}
           grabMouseMove={grabMouseMove}
+          selectedCells={selectedCells}
         />
       </div>
     </>
@@ -1107,7 +1126,7 @@ export const ModalContent = ({ closeModal }: ModalContentProps) => {
       <div className="fixed z-50 flex h-full w-full translate-y-[-90%] items-center justify-center">
         <Arrow1 />
         <Arrow3 />
-        <div className="fixed w-[40%] rounded bg-white p-8">
+        <div className="fixed w-[80%] rounded bg-background p-8 md:w-[40%]">
           <h2 className="mb-4 text-2xl">Guide d utilisation rapide</h2>
           <p className="mb-4">
             Dessinez vote potager à l aide de zones comme la pelouse, les
@@ -1134,7 +1153,7 @@ export const MobileModalContent = ({ closeModal }: MobileModalContentProps) => {
     <>
       <div onClick={closeModal} className="fixed inset-0 bg-slate-800/75"></div>
       <div className="fixed z-50 flex h-full w-full translate-y-[-100%] items-center justify-center">
-        <div className="fixed w-[40%] rounded bg-white p-8">
+        <div className="fixed w-[80%] rounded bg-white p-8 md:w-[40%]">
           <h2 className="mb-4 text-2xl">Plan du potager</h2>
           <h4 className="text-red-300">Avertissement</h4>
           <p className="mb-4">

@@ -57,22 +57,27 @@ export const CalendarModalContent = ({
   };
   return (
     <>
-      <div onClick={closeModal} className="fixed inset-0 bg-slate-800/75"></div>
-      <div className="fixed z-50 flex h-full w-full translate-y-[-90%] items-center justify-center">
+      <div
+        onClick={closeModal}
+        className="fixed inset-0 bg-background/60"
+      ></div>
+      <div className="fixed z-50 flex h-full w-full translate-y-[-70%] items-center justify-center md:translate-y-[-100%]">
         {/* <Arrow1 />
           <Arrow3 /> */}
-        <div className="fixed w-[40%] rounded bg-white p-8">
+        <div className="fixed m-2 w-full rounded bg-background p-6 md:m-0 md:w-[70%] md:p-8">
           <button
             className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white"
             onClick={closeModal}
           >
             X
           </button>
-          <h2 className="mb-4 text-2xl">Guide d utilisation rapide</h2>
+          <h2 className="mb-4 text-lg md:text-2xl">
+            Guide d utilisation rapide
+          </h2>
           <p className="mb-4">
             Générez dynamiquement les dates de votre calendrier
           </p>
-          <div>
+          <div className="w-full">
             {step === 1 && <Map onSelect={handleDepartmentSelect} />}
             {step === 2 && <DaySelector onSelect={handleDaysSelect} />}
             {step === 3 && (

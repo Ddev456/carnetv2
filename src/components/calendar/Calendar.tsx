@@ -11,12 +11,13 @@ import { useSession } from "next-auth/react";
 import { UserPreferences } from "../../db/query/user.query";
 import { Arrow1 } from "./Arrow1";
 import { Arrow2 } from "./Arrow2";
+import { CalendarFilters } from "./CalendarFilters";
 
 export type EventCalendar = {
   title: string;
+  icon: string;
   eventDate: Date;
   description: string;
-  colorCode: string;
   type: string;
 };
 
@@ -64,14 +65,15 @@ export const Calendar = ({
         )}
       {showModal &&
         createPortal(<ModalContent closeModal={closeModal} />, document.body)}
-      <div className="mt-8 flex h-full w-full flex-col items-center justify-center py-12 md:mt-4">
+      <div className="mt-10 flex h-full w-full flex-col items-center justify-center bg-background/40 p-4 md:mt-4 md:p-12">
         <CalendarNavigation
           date={date}
           dates={dates}
           setDate={setDate}
           setShowDynamicModal={setShowDynamicModal}
         />
-        <div className="mx-auto h-full w-full overflow-hidden rounded-lg bg-white shadow md:min-h-[800px]">
+        {/* <CalendarFilters /> */}
+        <div className="mx-auto h-full w-full overflow-hidden rounded-lg border-borders bg-secondary/20 shadow md:min-h-[800px]">
           <div className="flex items-center justify-between px-6 py-2">
             <div className="hidden flex-col gap-2 md:flex"></div>
           </div>
@@ -84,6 +86,7 @@ export const Calendar = ({
             handleDayClick={handleDayClick}
             selectedDayEvents={selectedDayEvents}
           />
+          C
         </div>
       </div>
     </>
@@ -97,13 +100,18 @@ type ModalContentProps = {
 export const ModalContent = ({ closeModal }: ModalContentProps) => {
   return (
     <>
-      <div onClick={closeModal} className="fixed inset-0 bg-slate-800/75"></div>
-      <div className="fixed z-50 flex h-full w-full translate-y-[-90%] items-center justify-center">
+      <div
+        onClick={closeModal}
+        className="fixed inset-0 bg-background/80"
+      ></div>
+      <div className="fixed z-50 flex h-full w-full translate-y-[-80%] items-center justify-center md:translate-y-[-90%]">
         <Arrow1 />
 
-        <div className="fixed w-[40%] rounded bg-white p-8">
-          <h2 className="mb-4 text-2xl">Guide d utilisation rapide</h2>
-          <p className="mb-4">
+        <div className="fixed w-[80%] rounded bg-background p-8 md:w-[40%]">
+          <h2 className="text-md mb-4 md:text-2xl">
+            Guide d utilisation rapide
+          </h2>
+          <p className="mb-4 text-sm">
             Parcourez le calendrier des différentes cultures ... Vous pourrez
             retrouver ici les dates concernant le semis, la plantation de chaque
             plante etc... Personnalisez-le en générant dynamiquement les dates

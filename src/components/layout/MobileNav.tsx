@@ -10,6 +10,7 @@ import { NotificationsButton } from "./NotificationsButton";
 import { LoggedInButton } from "@/features/auth/LoggedInButton";
 import { Notifications } from "@/db/query/user.query";
 import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 export type SideNavItem = {
   name: string;
@@ -104,9 +105,10 @@ export const MobileNav = () => {
 };
 
 const MenuToggle = ({ toggle }: { toggle: any }) => (
-  <button
+  <Button
+    variant={"default"}
     onClick={toggle}
-    className="pointer-events-auto absolute right-4 top-[14px] z-30"
+    className="pointer-events-auto absolute right-4 top-[14px] z-30 bg-background"
   >
     <svg width="23" height="23" viewBox="0 0 23 23">
       <Path
@@ -130,7 +132,7 @@ const MenuToggle = ({ toggle }: { toggle: any }) => (
         }}
       />
     </svg>
-  </button>
+  </Button>
 );
 
 const Path = (props: any) => (

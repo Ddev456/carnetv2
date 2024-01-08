@@ -9,7 +9,7 @@ import { z } from "zod";
 
 export const handleEventState = authenticatedAction(
   z.object({
-    plantId: z.string(),
+    plantId: z.number(),
     plantName: z.string(),
     startDate: z.date().nullable(),
     typeEvent: z.enum(["nursery", "seedling", "plantation"]).nullable(),
@@ -97,7 +97,7 @@ export const handleEventState = authenticatedAction(
 );
 export const handleRemovePotager = authenticatedAction(
   z.object({
-    plantId: z.string(),
+    plantId: z.number(),
   }),
   async ({ plantId }, { userId }) => {
     const isAuthorized = getRequiredAuthSession();

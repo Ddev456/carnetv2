@@ -16,7 +16,7 @@ export const MustLoggedButton = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant={"ghost"}>
+        <Button className="hover:bg-accent/60" variant={"ghost"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-calendar-bolt stroke-foreground/80"

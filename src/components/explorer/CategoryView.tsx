@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import clsx from "clsx";
 import { Alert, AlertTitle } from "@/components/ui/alert";
@@ -8,6 +8,7 @@ import { AlertTriangle } from "lucide-react";
 import { categoriesT, categoryId } from "./Explorer";
 import { Button } from "@/components/ui/button";
 import { type Plant, type Plants } from "@/db/query/plant.query";
+import Image from "next/image";
 
 type CategoryViewProps = {
   selected?: Plant;
@@ -46,26 +47,21 @@ export const CategoryView = ({
         return "*";
     }
   };
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-
-  const handleScrollLeft = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollLeft -= 100; // Adjust the scroll amount as needed
-    }
-  };
-
-  const handleScrollRight = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollLeft += 100; // Adjust the scroll amount as needed
-    }
-  };
 
   return (
-    <>
-      <div className="w-full">
-        <div className="flex flex-row gap-2 overflow-auto scroll-smooth md:overflow-hidden">
+    <div className="flex h-52 w-full flex-col justify-between md:h-[40rem] md:max-w-[20rem] md:flex-row">
+      <div className="flex flex-col gap-2">
+        <h4>Catégories</h4>
+        <div className="hide-scrollbar flex overflow-x-scroll md:flex-col md:overflow-x-hidden">
           {categories.map((category) => (
-            <Card
+            <div
+              style={{
+                backgroundImage: `url(${
+                  category.plants[0]?.thumbnail || plants[2].thumbnail
+                }`,
+                backgroundSize: "cover",
+                opacity: 0.4,
+              }}
               key={category.id}
               onClick={() => {
                 if (category.id === selectedCategory) {
@@ -81,93 +77,59 @@ export const CategoryView = ({
                 category.id === selectedCategory
                   ? "bg-primary/50 hover:bg-primary/50"
                   : "bg-primary/10 hover:bg-primary/20",
-                "w-[40%] cursor-pointer"
+                "m-1 h-[50px] w-[100px] cursor-pointer rounded-lg px-4 py-2 text-sm hover:opacity-80"
               )}
             >
-              <p className="text-md mx-auto flex flex-col items-center justify-center p-2 font-medium leading-normal">
-                <span>{category.emoji}</span>
+              <p className="text-md items-center justify-center font-medium leading-normal">
+                {/* <span>{category.emoji}</span> */}
                 <span>{category.name}</span>
               </p>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
-      <Card className="w-full bg-secondary/30">
-        <div className="flex gap-2">
-          <Button
-            variant={"ghost"}
-            onClick={handleScrollLeft}
-            className="hidden rounded hover:bg-transparent md:block"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-chevron-left stroke-foreground/80"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M15 6l-6 6l6 6" />
-            </svg>
-          </Button>
-          <CardContent
-            ref={scrollAreaRef}
-            className="inline-flex items-center gap-2 overflow-x-scroll scroll-smooth p-1 md:overflow-hidden"
-          >
-            {categories
-              .filter((category) => category.id === selectedCategory)[0]
-              .plants.map((plant) => (
-                <div
-                  key={plant.id}
-                  onClick={() => {
-                    onSelectCategory(categoryId(plant.categoryType));
-                    onSelect(plant);
-                  }}
-                  className={clsx(
-                    selected === plant
-                      ? "border-primary/40 bg-primary/50 hover:bg-primary/30"
-                      : "bg-secondary/40",
-                    "min-w-[120px] truncate rounded border border-borders bg-primary/10 px-4 py-2 align-middle text-sm transition-colors hover:cursor-pointer hover:bg-primary/20"
-                  )}
-                >
-                  {plant.name}
-                </div>
-              ))}
-            {plants.length === 0 ? (
-              <Alert>
-                <AlertTriangle />
-                <AlertTitle>
-                  Il n'y a aucune plantes ici pour le moment, Revenez plus tard.
-                </AlertTitle>
-              </Alert>
-            ) : null}
-          </CardContent>
-          <Button
-            variant={"ghost"}
-            onClick={handleScrollRight}
-            className="hidden rounded hover:bg-transparent md:block"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-chevron-right stroke-foreground/80"
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 6l6 6l-6 6" />
-            </svg>
-          </Button>
+
+      <div className="flex min-h-[700px] flex-col gap-2">
+        <h4 className="font-bold text-secondary/80">Plantes</h4>
+        <div className="hide-scrollbar flex h-24 overflow-x-scroll md:h-[400px] md:flex-col md:overflow-y-auto md:overflow-x-hidden">
+          {categories
+            .filter((category) => category.id === selectedCategory)[0]
+            .plants.map((plant) => (
+              <div
+                key={plant.id}
+                onClick={() => {
+                  onSelectCategory(categoryId(plant.categoryType));
+                  onSelect(plant);
+                }}
+                className={clsx(
+                  selected === plant
+                    ? "border-primary/40 bg-primary/50 hover:bg-primary/30"
+                    : "hover:bg-primary/20",
+                  "m-1 w-[120px] rounded-lg border border-secondary/80 px-4 py-2 text-sm transition-colors hover:cursor-pointer"
+                )}
+              >
+                <Image
+                  alt={plant.name}
+                  src={
+                    plant.icon ||
+                    "https://carnetv2.s3.eu-west-3.amazonaws.com/public/thumbnails/novegetable.png"
+                  }
+                  width={16}
+                  height={16}
+                />
+                {plant.name}
+              </div>
+            ))}
         </div>
-      </Card>
-    </>
+        {plants.length === 0 ? (
+          <Alert>
+            <AlertTriangle />
+            <AlertTitle>
+              Il n'y a aucune plantes ici pour le moment, Revenez plus tard.
+            </AlertTitle>
+          </Alert>
+        ) : null}
+      </div>
+    </div>
   );
 };

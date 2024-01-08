@@ -26,9 +26,13 @@ export default async function ExplorerPage({
   });
   // const userPotagerId = userPotager?.map((plant) => plant.plantId);
 
+  // const userPotagerId = userPotager
+  //   ?.map((plant) => plant.plantId)
+  //   .filter((id) => id !== null) as string[];
+
   const userPotagerId = userPotager
-    ?.map((plant) => plant.plantId)
-    .filter((id) => id !== null) as string[];
+    ?.map((plant) => plant.plantId?.toString())
+    .filter((id): id is string => id !== null);
 
   const query = searchParams?.query || "";
   const plantQuery = plants.data.filter((plant: Plant) => {

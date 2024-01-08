@@ -66,7 +66,7 @@ export const PlantsComboBox = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between border border-borders bg-primary/10 shadow transition-colors hover:bg-primary/20 hover:text-foreground md:w-[45%]"
+          className="w-full justify-between border border-borders bg-primary/10 shadow transition-colors hover:bg-primary/20 hover:text-foreground"
         >
           {value
             ? categories.find((cat) => cat.id === selectedCategory)?.name
@@ -75,8 +75,8 @@ export const PlantsComboBox = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
-        <Command className="w-[18rem] md:w-[34rem]">
+      <PopoverContent className="h-[24rem] w-full p-0 md:h-[full]">
+        <Command className="w-[18rem] md:w-[240px]">
           <CommandInput
             className="text-foregound"
             placeholder="Rechercher une plante ..."

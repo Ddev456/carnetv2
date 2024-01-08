@@ -2,6 +2,7 @@ import { addMonths, subMonths, startOfMonth } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { MustLoggedButton } from "../../../app/calendrier/mustLoggedButton";
 import { useSession } from "next-auth/react";
+import { CalendarFilters } from "./CalendarFilters";
 
 type CalendarNavigationProps = {
   date: Date;
@@ -38,8 +39,14 @@ export const CalendarNavigation = ({
     setDate(startOfMonth(currentDate));
   };
   return (
-    <div className="flex">
-      <Button variant={"ghost"} onClick={handleToday}>
+    <div className="flex w-full items-center justify-evenly rounded-t-xl bg-secondary/80">
+      <CalendarFilters />
+      {/* <div className="flex items-center"> */}
+      <Button
+        className="hover:bg-secondary/70"
+        variant={"ghost"}
+        onClick={handleToday}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="icon icon-tabler icon-tabler-calendar-event stroke-foreground/80"
@@ -59,10 +66,58 @@ export const CalendarNavigation = ({
           <path d="M8 15h2v2h-2z" />
         </svg>
       </Button>
+      <Button
+        className="px-1 hover:bg-secondary/70 md:px-4"
+        variant={"ghost"}
+        onClick={handlePrevMonth}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="icon icon-tabler icon-tabler-chevron-left stroke-foreground/80"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M15 6l-6 6l6 6" />
+        </svg>
+      </Button>
+      <h2 className="flex flex-col items-center text-center text-lg font-bold uppercase tracking-wide text-foreground/80">
+        <span>{date.toLocaleString("default", { month: "long" })}</span>{" "}
+        <span>{date.getFullYear()}</span>
+      </h2>
+      <Button
+        className="px-1 hover:bg-secondary/70 md:px-4"
+        variant={"ghost"}
+        onClick={handleNextMonth}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="icon icon-tabler icon-tabler-chevron-right stroke-foreground/80"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 6l6 6l-6 6" />
+        </svg>
+      </Button>
       {!data?.user ? (
         <MustLoggedButton />
       ) : (
-        <Button variant={"ghost"} onClick={() => setShowDynamicModal(true)}>
+        <Button
+          className="hover:bg-accent/60"
+          variant="ghost"
+          onClick={() => setShowDynamicModal(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-calendar-bolt stroke-foreground/80"
@@ -83,41 +138,7 @@ export const CalendarNavigation = ({
           </svg>
         </Button>
       )}
-      <Button variant={"ghost"} onClick={handlePrevMonth}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="icon icon-tabler icon-tabler-chevron-left stroke-foreground/80"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M15 6l-6 6l6 6" />
-        </svg>
-      </Button>
-      <h2 className="text-lg font-bold uppercase tracking-wide text-blue-500">
-        {date.toLocaleString("default", { month: "long" })} {date.getFullYear()}
-      </h2>
-      <Button variant={"ghost"} onClick={handleNextMonth}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="icon icon-tabler icon-tabler-chevron-right stroke-foreground/80"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M9 6l6 6l-6 6" />
-        </svg>
-      </Button>
+      {/* </div> */}
     </div>
   );
 };

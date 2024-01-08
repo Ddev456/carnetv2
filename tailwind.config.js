@@ -21,13 +21,20 @@ module.exports = {
       body: "var(--body-font)",
     },
     extend: {
+      maxHeight: {
+        custom: "calc(100vh - 100px)",
+      },
+      height: {
+        custom: "calc(100vh - 100px)",
+      },
       gridTemplateColumns: {
-        76: "repeat(76, minmax(0, 1fr))",
+        64: "repeat(64, minmax(0, 1fr))",
       },
       gridTemplateRows: {
-        57: "repeat(57, minmax(0, 1fr))",
+        64: "repeat(64 , minmax(0, 1fr))",
       },
       colors: {
+        gold: "hsl(var(--gold))",
         border: "hsl(var(--border))",
         borders: "hsla(var(--borders))",
         input: "hsl(var(--input))",
